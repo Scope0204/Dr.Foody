@@ -4,9 +4,16 @@ import styled from "styled-components";
 
 
 const Container = styled.div`
+    width: 50%;
+    height: 100%;
     :not(:last-child){
         margin-bottom: 50px;
     }
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    margin: 4% 0 0 0;
+    background-color: green;
 `;
 const Title = styled.span`
     font-size: 16px;
@@ -14,11 +21,11 @@ const Title = styled.span`
 `;
 const Grid = styled.div`
     display: grid;
-    margin-top: 25px;
-    grid-template-rows: repeat(auto-fill, 200px); 
-    grid-template-columns: repeat(auto-fill, 300px);
-    grid-gap: 20px;
-`;
+    margin-top: 35px;
+    grid-gap: 20px; 
+    `;
+    // grid-template-rows: repeat(auto-fill, 200px); 
+    // grid-template-columns: repeat(auto-fill, 300px);
 
 
 const DataProdList = ({ title, children}) => (

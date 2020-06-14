@@ -4,6 +4,9 @@ import styled from "styled-components";
 import WordCloud from './WordCloud';
 import Store from "../Store/store";
 
+import ReviewList from './ReviewList';
+import Reviews from './Reviews';
+
 const Container = styled.div`
     height: calc(100vh - 50px);
     width: 100%;
@@ -20,8 +23,8 @@ const Content = styled.div`
 `;
 
 const Cover = styled.div`
-    width: 30%;
-    height: 100%;
+    width: 20%;
+    height: 40%;
     background-image: url(${props => props.bgImage});
     background-position: center center;
     background-size: cover;
@@ -57,6 +60,9 @@ const Overview = styled.div`
     line-height: 1.5;
     width: 80%;
 `;
+const Div = styled.div`
+    color: red;
+`;
 
 // food_id: 1,
   // company_name: "(주)농심",
@@ -68,40 +74,62 @@ const Overview = styled.div`
   // company: null,
   // country: "대한민국",
   // sex: "여자"
-const ProductPresenter = ({ result, loading, error}) => 
+const ProductPresenter = ({ 
+    result, 
+    review_result, 
+    review_count,
+
+    loading, error}) => 
     (
+        <>
             <Container>
-            {result &&  (
-                    <Content>
-                        <Cover 
-                            bgImage = {
-                                result.food_photo 
-                                ?  result.food_photo
-                                : 
-                                require("./no_image.png")
-                            }
-                        />
-                        <Data>
-                            <Title>{result.food_name}</Title>
-                            <InformationContainer>
-                                <Information>{result.food_name}</Information>
-                                <Divider>•</Divider>
-                                <Information>{result.point}</Information>
-                                <Divider>•</Divider>
-                                <Information>
-                                    {result.company_name}
-                                    {result.country}
-                                </Information>
-                            </InformationContainer>
-                            <Overview>
-                                {result.material}
-                                <WordCloud food_code={result.food_id} />
-                            </Overview>
-                        </Data>
-                    </Content>
-                    )}
-                    {<div>Noting result</div>}
+                {result && (
+                        <Content>
+                            <Cover 
+                                bgImage = {
+                                    result.food_photo 
+                                    ?  result.food_photo
+                                    : 
+                                    require("./no_image.png")
+                                }
+                            />
+                            <Data>
+                                <Title>{result.food_name}</Title>
+                                <InformationContainer>
+                                    <Information>{result.food_name}</Information>
+                                    <Divider>•</Divider>
+                                    <Information>{result.point}</Information>
+                                    <Divider>•</Divider>
+                                    <Information>
+                                        {result.company_name}
+                                        {result.country}
+                                    </Information>
+                                </InformationContainer>
+                                <Overview>
+                                    {result.material}
+                                    <Div>{result.avoid}</Div>
+                                    <WordCloud food_code={result.food_id} />
+                                </Overview>
+                            </Data>
+                        </Content>
+                )}
+                {review_result && review_result.length > 0 && (
+                    <ReviewList review_count={review_count} >
+                        {review_result.map( (r, index) => (
+                            <Reviews 
+                            // review_date, review_content, review_point, user_nickname, review_country
+                                key = {index}
+                                review_date={r.review_date}
+                                review_content={r.review_content}
+                                review_point={r.review_point}
+                                user_nickname={r.user_nickname}
+                                country_code={r.country_code}
+                            />
+                        ))}
+                    </ReviewList>
+                )}
             </Container>
+    </>
     );
 
 

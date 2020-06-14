@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('test');
 // });
 // Route::view('/{path?}', 'test');
-Route::view('/{path?}', 'app');
+Route::view('/{path?}/{id?}/{order_id?}', 'app');
 
 // Route::get('/auth/regist', 'RegistController@index');
 // Route::post('/auth/regist', 'RegistController@store');

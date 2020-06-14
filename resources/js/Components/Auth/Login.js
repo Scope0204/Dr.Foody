@@ -54,21 +54,23 @@ class Login extends Component {
     };
 
     // 세션 등록
-    signUp = () => {
+    signUp = (access_token) => {
         const { id, nickname} = this.state;
         
         window.sessionStorage.setItem('id', id);
         window.sessionStorage.setItem('nickname', nickname);
+        window.sessionStorage.setItem('access_token', access_token);
         this.props.onLogin;
         // this.props.onLogin;
         this.props.history.push('/');
+        window.location.reload();
     }
 
     // 로그인 버튼
     handleLoginButton = e => {
         e.preventDefault();
         const {id, password } = this.state;
-
+// 로그인 주소: 'http://3.34.97.97/api/app/login' 
         axios.post('api/login', {
             id,
             // id : id
@@ -76,30 +78,16 @@ class Login extends Component {
             // password: password
         })
         .then( response => {
+            console.log('login 작동');
             if(response.data.access_token){
-                this.signUp();
+                this.signUp(response.data.access_token);
             }
-            console.log(response);
+            console.log(response.data.access_token);
         }) 
         .catch( error => {
             console.log(error);
         });
     };
-
-    componentDidMount(){
-        const pr = 123;
-        axios.get(`api/searchProduct/`, {
-            params : {
-                id: '111'
-            }
-        })
-        .then( res => {
-            console.log(res);
-        })
-        .catch( error => {
-            console.log(error);
-        });
-    }
 
     render() { 
         const {id} = this.state;

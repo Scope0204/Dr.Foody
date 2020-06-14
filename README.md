@@ -17,7 +17,7 @@
         data graph [x]
             review - pagenation
             clustering inform - package circle chart
-            기간 내 조회 정보 - step count chart
+            기간 내 조회 정보 - step count chart -> food_id = 제품번호 / year = 년도
             지역별 검색 순위 - table
             검색 증가 추이 - line graph
             연령대별 검색 수 - simple column chart
@@ -38,6 +38,8 @@
     react-moment: npm i react-moment-input --save
     
     엑셀 파일 내보내기: Export html table data to Excel using JavaScript
+
+    아임포트 사용법: https://github.com/iamport/iamport-react-example
 
 [error]
     condition에 알맞는 chart 띄우기 html container not found error:
@@ -65,3 +67,13 @@
          - null을 보내줘서 처음 render때 에러가 뜸
          - componentDidMount() -> 동작하지 않음 
          - 초기 state값을 받아올 값과 동일하게 설정 (null이 아니게 설정)
+
+아임포트 사용법
+    npm i antd -> Form.create가 삭제됨
+    npm i @ant-design/compatible  => Form
+    npm i dayjs - 종속성
+    npm i node-sass - 종속성
+    npm i node-gyp
+    npm i fibers - 종속성
+    npm i fibers_node_v8
+    npm install --save @ant-design/icons => Icon

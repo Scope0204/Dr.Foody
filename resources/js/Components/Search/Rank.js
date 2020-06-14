@@ -7,7 +7,7 @@ const RankContainer = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-    padding-top: 100px;
+    padding-top: 300px;
 `;
 const RankCardSt = styled.div`
     width: 30%;

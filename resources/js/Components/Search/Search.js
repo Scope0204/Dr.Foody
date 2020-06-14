@@ -55,6 +55,20 @@ class Search extends Component {
         }
     }
     
+    // update() {
+    //   const { index, items } = this.state;
+    //   const { history } = this.props;
+  
+    //   storage(index).then((res) => {
+    //     this.setState({
+    //       index: res.next,
+    //       items: items.concat(res.pokemons),
+    //     }, () => {
+    //       history.replace(undefined, { ...this.state });
+    //     });
+    //   });
+    // }
+
     // componentDidMount() {
     //     const { history, location } = this.props;
     //     if (!location.state) {
@@ -64,7 +78,8 @@ class Search extends Component {
     //       history.replace(undefined, undefined);
     //     }
     //   }
-
+    
+    
     render(){
         const {searchTerm, pastTerm, result, loading, error } = this.state;
         return (

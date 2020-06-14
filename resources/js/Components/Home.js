@@ -57,21 +57,31 @@ const IfDiv = styled.div`
 `;
 
 class Home extends React.Component {
-    
+    state = {
+        token: ""
+    }
+    componentDidMount(){
+        let token = window.sessionStorage.getItem('access_token');
+        this.setState({
+            token
+        });
+    }
     render(){
+        const { token } = this.state;
+        console.log('Home render');
+        console.log(token);
         return(
             <>
                 {/* <Header logged={logged} onLogout={onLogout} /> */}
                 <ImageContainer>
-                    <IfDiv bgImage = {require(`../assets/Home1.png`)}></IfDiv>
-                    <IfDiv bgImage = {require(`../assets/Home2.png`)}></IfDiv>
+                    <IfDiv bgImage = {require(`../assets/home1.png`)}></IfDiv>
+                    <IfDiv bgImage = {require(`../assets/home2.png`)}></IfDiv>
                     {/* <IfDiv bgImage = {require(`../assets/sample3.jpg`)}></IfDiv> */}
-
                 </ImageContainer>
             </>
         );
     }
 }
 
-export default withRouter(Home);
+export default Home;
 

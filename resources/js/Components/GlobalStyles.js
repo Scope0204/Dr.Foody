@@ -11,7 +11,9 @@ const globalStyles = createGlobalStyle`
         box-sizing: border-box;
     }
     body{
-        padding-top: 55px;
+        width: 100%;
+        height: 100%;
+        padding-top: 50px;
         font-family:-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
         font-size: 12px;
         color: #696969;

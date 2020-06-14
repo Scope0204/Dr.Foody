@@ -39,7 +39,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'remeber_token'
+        'remeber_token','password'
     ];
 
     /**
@@ -56,7 +56,18 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims() {
         // 수정하여 jwt토큰에 정보 추가 가능
-        return ['nickname'=>$this->user_nickname];
+        return [
+            'user_id'=>$this->user_id,
+            'user_nickname'=>$this->user_nickname,
+            'user_mail'=>$this->user_mail,
+            'user_birth'=>$this->user_birth,
+            'user_sex'=>$this->user_sex,
+            'user_sweet'=>$this->user_sweet,
+            'user_bitter'=>$this->user_bitter,
+            'user_hot'=>$this->user_hot,
+            'user_sour'=>$this->user_sour,
+            'user_salty'=>$this->user_salty,
+        ];
     }
 
     //  나중에 해제하기

@@ -7,18 +7,20 @@ import Message from '../Message'
 import Store from '../Store/store';
 
 const Container = styled.div`
-    margin-top:50px;
     position: relative;
+    padding-top: 50px;
 `;
 // Search section
 const SerachContainer = styled.div`
     width: 50%;
     position: absolute;
+    padding-top: 200px;
+    left: 70%;
+    transform: translate(-70%);
 `;
 const Form = styled.form`
     width: 100%;
     position: absolute;
-    left: 70%;
 `;
 const Input = styled.input`
     all: unset;
@@ -44,32 +46,24 @@ const resultContainer = styled.div`
     width: 100%;
 
 `;
+const LogoImage = styled.div`
+left: 49%;
+transform: translate(-49%);
+    position: absolute;
+    display: block;
+    width: 200px;
+    height: 190px;
+    background-size: contain;
+    background-image: url(${ props => props.bgUrl });
+    background-position: center center;
+`;
 
-const test_result = [
-    {
-        food_name : '신라면', 
-        food_photo: null, 
-        rating: 10, 
-        materiial : '없엉'
-    },
-    {
-        food_name : '삼양', 
-        food_photo: null, 
-        rating: 5, 
-        materiial : 'ㄹㄴㅁㅇㄹㄴㅁㅇㄹ'
-    },
-    {
-        food_name : '조준경', 
-        food_photo: null, 
-        rating: 9, 
-        materiial : 'whwnsrud'
-    }
-];
 const SerachPresenter = ({ handleSubmit, searchTerm, updateTerm, pastTerm, result, loading, error }) => (
             <Container>
+                    <LogoImage bgUrl = {require('../../assets/logo.jpg')} />
                     <SerachContainer>
                         <Form onSubmit={handleSubmit}>
-                            <Input placeholder="Search Products" value= {searchTerm} onChange={updateTerm} ></Input>
+                            <Input placeholder="제품을 입력하여 주세요" value= {searchTerm} onChange={updateTerm} ></Input>
                             <BtnSearch type="submit" value="검색">검색</BtnSearch>
                         </Form>
                     </SerachContainer>
@@ -79,7 +73,7 @@ const SerachPresenter = ({ handleSubmit, searchTerm, updateTerm, pastTerm, resul
                         <>
                             
                             {result && result.length > 0 && (
-                                <ProdList title={searchTerm}>
+                                <ProdList title={pastTerm}>
                                     { result.map( (c, index) => (
                                         <Product
                                             key = {index}

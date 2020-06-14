@@ -104,7 +104,16 @@ class Header extends React.Component {
                 
                         <LogItem>
                             {logged 
-                                ? <SLink to="/" onClick={onLogout}>{id}</SLink>
+                                ? (
+                                    <List>
+                                        <Item>
+                                            <SLink to={`/mypage/datalist/${id}`}>{id}</SLink>
+                                        </Item>
+                                        <Item>
+                                            <SLink to="/" onClick={onLogout}>Logout</SLink>
+                                        </Item>
+                                    </List>
+                                )
                                 : <SLink to="/login">LOGIN</SLink>
                             }
                         </LogItem>
