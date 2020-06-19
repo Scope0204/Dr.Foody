@@ -61,14 +61,20 @@ export default class extends Component {
     };
 
     searchByTerm = async() => { 
-        const { searchTerm } = this.state;
+        const { searchTerm, user_id } = this.state;
         this.setState({ loading: true});
         console.log('검색 작동');
+        let result = null
         try {
-            const {data : result} = 
-                await axios.get(`http://3.34.97.97/api/searchFood/${searchTerm}`);
+            if(user_id){
+               ({data : result} = 
+                    await axios.get(`http://3.34.97.97/api/searchFood/${searchTerm}/${user_id}`));
+            } else {
+                ({data : result} = 
+                    await axios.get(`http://3.34.97.97/api/searchFood/${searchTerm}`));
+            }
             this.setState({
-                result
+                result,
             });
             console.log(this.state.result);
         } catch {
@@ -89,11 +95,12 @@ export default class extends Component {
         }
     };
 
-    addWishList = (user_id, value) => {
-        const res = Api.addWishListApi(user_id, value);
-        return res;
-    };
+    // addWishList = (user_id, value) => {
+    //     const res = Api.addWishListApi(user_id, value);
+    //     return res;
+    // };
 
+    // 로그인 확인하고 구입한 목록 불러오기
     checkLogin = () => {
         const { user_id } = this.state;
         if(!user_id){
@@ -122,11 +129,15 @@ export default class extends Component {
         if(name==='wish'){
             // true일 경우 결제창으로 넘어감
             // 찜 목록에 추가 후 장바구니 화면
-            const res = this.addWishList(user_id, value);
-            alert('추가하였습니다.');
+            const res = Api.addWishListApi(user_id, value);
+            if(res) {
+                alert('이미 있는 제품입니다.');
+            } else {
+                alert('추가하였습니다.');
+            }
             // 구매 ok일 경우
         } else if(confirm && name==='buy'){
-            this.addWishList(user_id, value);
+            Api.addWishListApi(user_id, value);
             console.log('구매성공');
             this.props.history.push('/wishlist');
         }
@@ -143,7 +154,6 @@ export default class extends Component {
         const {searchTerm, pastTerm, result, loading, error, logined } = this.state;
         console.log('render: ');
         console.log(result);
-
         return (
             <DataSearchContainer
                 searchTerm={searchTerm}

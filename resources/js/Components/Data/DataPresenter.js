@@ -4,6 +4,9 @@ import SearchController from './SearchController';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
+import { DatePicker } from 'antd';
+import 'antd/dist/antd.css';
+import moment from 'moment';
 // import moment from 'moment';
 // import Loader from '../../Loader';
 // import Chart from './Charts/XYChart';
@@ -99,16 +102,6 @@ const ChartPresenter = styled.div`
 // 총 리뷰 수 - reviewT where =food_id count INT
 // 인기 국가 - reviewT user_id join country_code orderby 제일 첫번째 STRING
 
-
-const test_prod_search_result = {
-    food_name : '신라면',   
-    food_photo : null,   
-    views : 100,   
-    all_reviews : 1000,   
-    gender_of_popular : false,   
-    country_of_popular : '한국',   
-}
-
 // Handle button
 //  handleSearch
 //  handleControlButton
@@ -125,11 +118,37 @@ const test_prod_search_result = {
     //     country: "",
     //     sex: ""
     //     }
+const dateFormat = 'YYYY/MM/DD';
+const monthFormat = 'YYYY/MM';
+const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
+const currentDate = new Date(dateFormat);
+const { RangePicker} = DatePicker;
+
+
+  
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current > moment().endOf('day');
+  }
+  
+  
 
 const DataPresenter = ({chart, genesis_term,  previous_term, later_term, termCheck, 
-    condition, date_condition, prod_search_result, loading, handleControlButton, handleTerm, handleSearch,handleCondition}) => 
-(
+    condition, date_condition, prod_search_result, loading, 
+    handleControlButton, handleSearch,handleCondition,handleDateChange}) => 
+    (
+    <>
+    
     <ShowContainer>
+        {/* <DatePicker onChange={handleDateChange} picker={"week"} format={dateFormat} disabledDate={disabledDate}/>
+        <DatePicker onChange={handleDateChange} picker={"month"} format={monthFormat} disabledDate={disabledDate} /> */}
+        <RangePicker onChange={handleDateChange}  format={dateFormat}  disabledDate={disabledDate} 
+            ranges={{
+                Today: [moment(), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('day')],
+                'A Week': [moment().startOf('day').subtract(7, 'days'), moment().endOf('day')],
+            }}
+        />
         {prod_search_result && prod_search_result.length>0 && (
             <>
                 <ProdInform>
@@ -155,13 +174,13 @@ const DataPresenter = ({chart, genesis_term,  previous_term, later_term, termChe
                         </InformationContainer>
                     </Data>
                 </ProdInform>
-                <DateGroup>
+                {/* <DateGroup>
                     <DateButton current= { date_condition === 'all' }   name='all' value='all' onClick={handleTerm}>전체</DateButton>
                     <DateButton current= { date_condition === 'today'} name='today' value='today'  onClick={handleTerm}>오늘</DateButton>
                     <DateButton current= { date_condition === 'week'}  name='week'  value='week' onClick={handleTerm}>일주일</DateButton>
                     <DateButton current= { date_condition === 'month'} name='month' value='month'  onClick={handleTerm}>한달</DateButton>
                     <SearchButton onClick={handleSearch}>검색</SearchButton>
-                </DateGroup>
+                </DateGroup> */}
                 <ButtonGroup>
                     <ControlButton current={ condition === 'country' } name='country' value='country' onClick={handleCondition}>국가</ControlButton>
                     <ControlButton current={ condition === 'gender' }  name='gender' value='gender' onClick={handleCondition}>성별</ControlButton>
@@ -172,6 +191,7 @@ const DataPresenter = ({chart, genesis_term,  previous_term, later_term, termChe
             </>
         )}
     </ShowContainer>
+    </>
 );
 
 export default DataPresenter;

@@ -1,10 +1,13 @@
 import React from 'react';
 import axios from 'axios';
+import {Redirect } from 'react-router-dom';
 import WishlistPresenter from './WishlistPresenter';
 import api, { Api } from '../api';
 
 
 // 찜(장바구니)에 넣은 목록을 가져와서 확인
+
+const userCode = 'imp81806721';
 
 export default class extends React.Component{
     constructor(props){
@@ -19,6 +22,8 @@ export default class extends React.Component{
             date: new Date().getTime(),
             order_id:"",
         };
+        this.refreshList = this.refreshList.bind(this);
+        this.createMerchant_uid = this.createMerchant_uid.bind(this);
     };
 
     handlePayment = e => {
@@ -27,8 +32,6 @@ export default class extends React.Component{
         // 구매가 완료 되었습니다.
         // go 구매목록 보기
         // go 메인화면으로 가기
-
-        this.props.history.push('/payment');
     };
     handleCancel = e => {
         e.preventDefault();
@@ -39,8 +42,8 @@ export default class extends React.Component{
         const { target: {value}} = e;
         const {user_id} = this.state;
         Api.wishDeleteApi(user_id, value);
+        this.refreshList();
         alert('삭제하였습니다.');
-        window.location.reload();
     };
 
     // 주문 번호 생성
@@ -52,33 +55,55 @@ export default class extends React.Component{
             order_id,
         });
     }
+    refreshList = async() => {
+        const { user_id } = this.state;
+        let total_price = 0;
+        let food_list = [];
+        const { data: wishList} = await Api.wishListApi(user_id);
+        console.log(user_id);
+        console.log(wishList);
+        total_price = wishList.length * 5000;
+        wishList.map( w => {
+            food_list.push(w.food_id);
+        });
+        this.setState({
+            wishList,
+            total_price,
+            food_list,
+        });
+    }
     // 구매하기 버튼을 눌렀을 때 동작
     requestPay = () => {
         const { user_id, order_id, food_list, total_price, type} = this.state;
         // IMP.request_pay(param, callback) 호출
         //   const { IMP } = window;
-        const userCode = 'imp81806721';
+        console.log(food_list);
+        console.log(order_id);
+
         IMP.init(userCode);
-        this.createMerchant_uid();
         IMP.request_pay({ // param
             pay_method :'card',
             merchant_uid : order_id,
-            // name : `${user_id} 님의 주문`,
-            name : `아닌데요 저 세진인데용 ㅇㅁㅇa`,
-            // amount : total_price,
-            amount : 950706,
-            buyer_name : '보이스 피싱입니다 ^^a',
+            name : `${user_id} 님의 주문`,
+            amount : total_price,
+            buyer_name : user_id,
             buyer_tel : '01041974198',
             buyer_email: "rmsidsha@naver.com",
         }, rsp => { // callback
             if (rsp.success) {
-            // 결제 성공 시 로직,
-            console.log('결제 성공');
-            Api.buyDataApi(user_id,
-                order_id,
-                type,
-                food_list);
-            this.props.history.push(`/payment/result/${order_id}`);
+                // 결제 성공 시 로직,
+                console.log('결제 성공');
+                let apiResult = Api.buyDataApi(user_id,order_id,type,food_list);
+                if (apiResult) {
+                    Api.wishDeleteApi(user_id);
+                    this.refreshList();
+                    // 전체 찜 목록 삭제하는 것 만들기
+                    // window.location.reload();
+                    this.props.history.push(`/payment/result/${order_id}`);
+                } else {
+                    console.log('api 실패')
+                }
+                // this.props.history.push(`/payment/result/${order_id}`);
             } else {
             // 결제 실패 시 로직,
                 console.log(rsp);
@@ -94,23 +119,10 @@ export default class extends React.Component{
         // 취소 버튼 -> 뒤로 가기
         // http://3.34.97.97/api/pocketList 
         // key = user_id
-        const { user_id } = this.state;
-        let total_price = 0;
-        let food_list = [];
+        
+        this.createMerchant_uid();
         try{
-            const { data: wishList} = await Api.wishListApi(user_id);
-            console.log(user_id);
-            console.log(wishList);
-            // total_price = calTotalPrice(wishList.length);
-            total_price = wishList.length * 5000;
-            wishList.map( w => {
-                food_list.push(w.food_id);
-            });
-            this.setState({
-                wishList,
-                total_price,
-                food_list,
-            });
+            this.refreshList();
         }catch {
             this.setState({
                 error: '검색 결과가 없습니다.'
@@ -121,8 +133,14 @@ export default class extends React.Component{
     render(){
         const { wishList, total_price, error, user_id,type  } = this.state;
         console.log('위시리스트: ', wishList);
+        const { order_id, food_list} = this.state;
+        console.log(order_id);
+        console.log(user_id);
+        console.log(type);
+        console.log(food_list);
         return (
             <WishlistPresenter 
+                order_id = {order_id}
                 wishList = {wishList}
                 total_price = {total_price}
                 user_id = {user_id}

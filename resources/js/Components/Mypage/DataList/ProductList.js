@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 
 const Container = styled.div`
+width: 60%;
 padding-top: 20px;
     :not(:last-child){
         margin-bottom: 50px;

@@ -5,6 +5,9 @@ import styled from 'styled-components';
 
 const Container = styled.div`
     padding-top: 20px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% -50%);
 `;
 const Div = styled.div`
     padding-top: 10px;
@@ -75,11 +78,7 @@ class PaymentTest extends React.Component {
       return (
         <>
         <Container>
-            <Div>주문자: {user_id}</Div>
-            <Div>결제 방식: {type}</Div>
-            <Div>주문번호: {order_id}</Div>
-            <Div>총 결제 금액: {total_price}</Div>
-            <button onClick={this.requestPay}>결제하기</button>
+          <div>결제 진행중입니다.</div>
         </Container>
         </>
       );

@@ -47,6 +47,7 @@
         "prop-types": "^15.7.2",
         "query-string": "^6.13.0",
         "react-dates": "^21.8.0",
+        "react-export-excel": "^0.5.3",
         "react-moment": "^0.9.7",
         "react-router-dom": "^5.1.2",
         "react-useragent": "^1.1.2",

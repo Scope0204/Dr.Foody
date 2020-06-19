@@ -89,13 +89,14 @@ const TextDiv = styled.div`
 // search_count ={c.search_count} country ={c.country}
 // sex ={c.sex}
 // food_id로 고치기
-const DataProduct = ({food_id, food_name, food_photo, rating, review_count, search_count, country, sex, onConfirm, checkUser, logined}) => (
+const DataProduct = ({food_id, food_name, food_photo, rating, review_count, search_count, country, sex, onConfirm, checkUser, logined, bought}) => (
             // 로그인 했는지 확인하고 사용자의 구매 목록에 있는지 확인 후 
             // 구매 목록에 있으면 그냥 볼 수 있고 and 구매, 찜 버튼 사라짐
             // 없으면 구매해야한다, 찜 버튼 생성
             <>
             {!logined
             ? (
+                // 로그인이 되어 있지 않을 때
                 <ContainerButton>
                     <Container onClick={checkUser}>
                         <Image bgUrl={
@@ -119,7 +120,7 @@ const DataProduct = ({food_id, food_name, food_photo, rating, review_count, sear
                 </ContainerButton>
             )
             : (
-                // 구매 목록에 없을 때
+                // 로그인이 되어 있을 때
                 <>
                 <ContainerButton>
                     <Container onClick={onConfirm} value={food_id} name='buy'>
@@ -136,11 +137,22 @@ const DataProduct = ({food_id, food_name, food_photo, rating, review_count, sear
                             <Inform>{`선호성별: ${sex}`}</Inform>
                         </InformationContainer>
                     </Container>
-                    <BuyContainer>
-                        <TextDiv>5ooo￥</TextDiv>
-                        <Button onClick={onConfirm} value={food_id} name='buy'>구매</Button>
-                        <Button onClick={onConfirm} value={food_id} name='wish'>찜</Button>
-                    </BuyContainer>
+                    {bought
+                        ?(
+                            <Link to={`/data/${food_id}`} >
+                                <BuyContainer>
+                                    <Button>데이터 확인</Button>
+                                </BuyContainer>
+                            </Link>
+                        )
+                        :(
+                            <BuyContainer>
+                                <TextDiv>5ooo￥</TextDiv>
+                                <Button onClick={onConfirm} value={food_id} name='buy'>구매</Button>
+                                <Button onClick={onConfirm} value={food_id} name='wish'>찜</Button>
+                            </BuyContainer>
+                        )
+                    }
                     </ContainerButton>
                 </>
             )

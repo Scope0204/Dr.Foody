@@ -40,7 +40,8 @@
     엑셀 파일 내보내기: Export html table data to Excel using JavaScript
 
     아임포트 사용법: https://github.com/iamport/iamport-react-example
-
+    
+    엑셀 내보내기: npm install react-export-excel --save
 [error]
     condition에 알맞는 chart 띄우기 html container not found error:
         condition에 맞게 chart를 보여 줘야하는데 안됨.

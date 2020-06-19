@@ -7,7 +7,6 @@ import Message from '../Message'
 
 const Container = styled.div`
     position: relative;
-    padding-top: 50px;
 `;
 // Search section
 const SerachContainer = styled.div`
@@ -93,8 +92,10 @@ const DataSearchContainer = ({ logined, checkUser, onConfirm , handleSubmit, sea
                                             rating={c.point}
                                             search_count ={c.search_count} country ={c.country}
                                             sex ={c.sex}
+                                            bought ={c.bought}
                                             checkUser = {checkUser}
                                             onConfirm = {onConfirm}
+
                                     />
                                 ))}
                             </DataProdList>

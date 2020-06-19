@@ -68,15 +68,18 @@ const Container = styled.div`
 class PaymentResult extends React.Component {
   constructor(props){
     super(props);
-    // const {match:{params:{order_id}}} =this.props;
+    const {match:{params:{order_id}}} =this.props;
+    const {id} = this.props;
     this.state = {
-      // order_id: order_id
-      order_id: "test"
+      order_id: order_id,
+      id: id,
+      // order_id: "test"
     };
   }
 
   render(){
-    const {order_id} = this.state;
+    const {order_id, id} = this.state;
+    console.log(id);
     return (
       <Wrapper>
         <Container colorType="blue">
@@ -92,7 +95,7 @@ class PaymentResult extends React.Component {
             <Icon type="arrow-left" />
             메인화면으로 돌아가기
           </Button>
-          <Button size="large" onClick={() => this.props.history.push('/mypage/datalist')}>
+          <Button size="large" onClick={() => this.props.history.push(`/mypage/datalist/${id}`)}>
             <Icon type="arrow-right" />
             구매내역 확인하기
           </Button>

@@ -56,7 +56,7 @@ padding-bottom: 10px;
 //         "country": "대한민국",
 //         "sex": "남자"
  
-const WishlistPresenter = ({wishList , handleCancel, handlePayment, handleDelete, total_price, user_id, type,  error}) =>(
+const WishlistPresenter = ({wishList , handleCancel, handlePayment, handleDelete, total_price, user_id, type, order_id,  error}) =>(
     <Container>
         <ImageContainer>
             <CartImage bgUrl = {require('../../assets/cart.png')} />
@@ -91,6 +91,7 @@ const WishlistPresenter = ({wishList , handleCancel, handlePayment, handleDelete
     <Border />
     <ResultContainer>
             <Div>주문자: {user_id}</Div>
+            <Div>주문번호: {order_id}</Div>
             <Div>결제 방식: {type}</Div>
             <Div>총 결제 금액: {total_price}</Div>
     </ResultContainer>

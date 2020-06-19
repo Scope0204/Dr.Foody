@@ -4,6 +4,7 @@ import {BaseUrl} from '../api';
 import axios from 'axios';
 import moment from 'moment';
 import Moment from 'react-moment';
+import {Api} from '../api';
 
 // Chart import 
 import * as am4core from "@amcharts/amcharts4/core";
@@ -39,22 +40,9 @@ export default class extends React.Component{
             condition: "",
             date_condition: "",
             prod_search_result: null,
-            prod_value_result: null
-            // [
-            // {"country_name_name": "조준경",
-            //  "count": 1000},
-            // {"country_name": "서은우",
-            //  "count": 850},
-            // {"country_name": "박형준",
-            //  "count": 1850},
-            // {"country_name": "오정훈",
-            //  "count": 1000},
-            // {"country_name": "김나경",
-            //  "count": 230},
-            // ]
-            ,
+            prod_value_result: null,
             loading: false,
-            food_code: food_id,
+            food_id: food_id,
             chart: 'chartdiv'
 
             // // date picker
@@ -71,42 +59,6 @@ export default class extends React.Component{
     //     console.log('Worked Control button');
     // };
 
-    // 기간 설정
-    handleTerm= e => {
-        e.preventDefault();
-        const { target : {name, value}} = e;
-        // const {test_moment, genesis_term} = this.state;
-        // const statndard_term = new Date('2020-05-01');
-        let previous_val, later_val = moment().format('YYYY-MM-DD');
-        // if(name === 'previous'){
-        //     previous_val = value;
-        // } else if (name === 'later'){
-        //     later_val = value
-        // } else if (name==='all'){
-        //     // 서비스 시작일 부터 지금까지
-        //     previous_val = statndard_term;
-        //     later_val = genesis_term
-        // } else if (name==='today'){
-        //     previous_val = genesis_term;
-        //     later_val = genesis_term
-        // } else if (name==='week'){
-        //     previous_val = moment.add('days', -7);
-        //     later_val = test_moment;
-        // } else if (name==='month'){
-        //     previous_val = moment.add('months', -1);
-        //     later_val = genesis_term
-        // }
-        this.setState({
-            previous_term: previous_val,
-            later_term: later_val,
-            date_condition: value
-        });
-        console.log('Worked Term button');
-        console.log("   previous: ",this.state.previous_term);
-        console.log("   later: ",this.state.later_term);
-        console.log("   date_condition: ",this.state.date_condition);
-    };
-
     // 검색 동작
     handleSearch= e => {
         e.preventDefault();
@@ -114,9 +66,8 @@ export default class extends React.Component{
         this.searchByDate();
     };
     // 날짜 검색
-    searchByDate = () => {
-        console.log("   previous: ",this.state.previous_term);
-        console.log("   later: ",this.state.later_term);
+    handleDateChange = (date, dateString) => {
+        console.log(date, dateString);
     }
     // async() => { 
     //         const { previous_term, later_term } = this.state;
@@ -164,36 +115,17 @@ export default class extends React.Component{
 
     async componentDidMount() {
         console.log('DATA componentDidMount 실행: ');
-        const { food_code } =this.state;
-        console.log(food_code);
+        const { food_id } =this.state;
+        console.log(food_id);
         this.setState({
             loading: true,
         });
-        let food_name = "";
-        switch(parseInt(food_code)){
-            case 1:
-                food_name = "신라면";
-                break;
-            case 2:
-                food_name = "불닭";
-                break;
-            case 3:
-                food_name = "자가비";
-                break;
-            case 4:
-                food_name = "홍초";
-                break;
-            case 5:
-                food_name = "마켓오";
-                break;
-        }
-        console.log(`food_name: ${food_name}`);
-        const baseUrl = 'http://3.34.97.97/api/';
         try {
             // food_id에 대한 정보 가져오는 api
-            const {data : prod_search_result} = await axios.get(`${baseUrl}searchFood/${food_name}`);
-            const {data : prod_value_result} = await axios.get(`${baseUrl}countryData/${food_code}`);
-            console.log("DATA food_code: ");
+            const {data : prod_search_result} = await Api.detailFood2Api(food_id);
+            const {data : prod_search_result} = await Api.detailFood2Api(food_id);
+            const {data : prod_value_result} = await Api.countryDataApi(food_id);;
+            console.log("DATA food_id: ");
             console.log(prod_search_result);
             this.setState({
                 prod_search_result,
@@ -202,8 +134,8 @@ export default class extends React.Component{
             });
         } catch (e) {
             this.setState({
-            error: "Can't find results information",
-            loading: false,
+                error: "Can't find results information",
+                loading: false,
             });
         }
     }
@@ -229,9 +161,9 @@ export default class extends React.Component{
                     prod_search_result= {prod_search_result}
                     loading = {loading}
                     handleControlButton = {this.handleControlButton}
-                    handleTerm = {this.handleTerm}
                     handleSearch = {this.handleSearch}
                     handleCondition = {this.handleCondition}
+                    handleDateChange = {this.handleDateChange}
                 />
                 { condition==='gender' && (
                     <XYChart prod_value_result={prod_value_result}/>

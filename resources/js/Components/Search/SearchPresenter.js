@@ -86,7 +86,7 @@ const SerachPresenter = ({ handleSubmit, searchTerm, updateTerm, pastTerm, resul
                                     ))}
                                 </ProdList>
                             )}
-                            { error && <Message color="#e74c3c" text={error} />}
+                            {/* { error && <Message color="#e74c3c" text={error} />} */}
                             {/* { result.length === 0  && <Message text={`Nothing Found for ${pastTerm}`} color="#FFFF00" />} */}
                         </>
                     )}
