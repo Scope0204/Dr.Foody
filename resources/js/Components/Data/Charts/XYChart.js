@@ -51,7 +51,7 @@ class XYChart extends Component {
     return (
       <>
         <label>Redial</label>
-        <div id="chartdiv" style={{ width: "50%", height: "500px" }}></div>
+        <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
       </>
     );
   }

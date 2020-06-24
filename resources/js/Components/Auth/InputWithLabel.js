@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import oc from 'open-color';
 
 const Wrapper = styled.div`
     & + & {
@@ -9,20 +8,20 @@ const Wrapper = styled.div`
 `;
 const Label = styled.div`
     font-size: 1rem;
-    color: ${oc.gray[6]};
+    color: #868e96;
     margin-bottom: 0.25rem;
 `;
 const Input = styled.input`
     width: 100%;
     outline: none;
-    border: 1px solid ${oc.gray[3]};
+    border: 1px solid #dee2e6;
     border-radius: 0px;
     line-height: 2.5rem;
     font-size: 1.2rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     ::placehodler {
-        color: ${oc.gray[3]};
+        color: #dee2e6;
     }
 `;
 
@@ -30,34 +29,34 @@ const InputCheck = styled.input.attrs({
     type: 'checkbox',
 })`
     outline: none;
-    border: 1px solid ${oc.gray[3]};
+    border: 1px solid #dee2e6;
     border-radius: 0px;
     line-height: 2.5rem;
     font-size: 1.2rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     ::placehodler {
-        color: ${oc.gray[3]};
+        color: #dee2e6;
     }
 `;
 
 const Span = styled.span`
     width: 100%;
     outline: none;
-    border: 1px solid ${oc.gray[3]};
+    border: 1px solid #dee2e6;
     border-radius: 0px;
     line-height: 2.5rem;
     font-size: 1.2rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     ::placehodler {
-        color: ${oc.gray[3]};
+        color: #dee2e6;
     }
 `;
 
 const OptionHtml = styled.option`
     width: 100%;
-    border: 1px solid ${oc.gray[3]};
+    border: 1px solid #dee2e6;
     outline: none;
     border-radius: 0px;
     line-height: 2.5rem;
@@ -67,7 +66,7 @@ const OptionHtml = styled.option`
 `;
 const Select = styled.select`
     width: 100%;
-    border: 1px solid ${oc.gray[3]};
+    border: 1px solid #dee2e6;
     outline: none;
     border-radius: 0px;
     line-height: 2.5rem;

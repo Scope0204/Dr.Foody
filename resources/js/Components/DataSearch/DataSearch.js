@@ -43,6 +43,7 @@ export default class extends Component {
         e.preventDefault();
         console.log("submit");
         const { searchTerm, pastTerm } = this.state;
+        this.checkLogin();
         if(searchTerm !== "") {
             this.searchByTerm();
             this.setState({
@@ -114,13 +115,14 @@ export default class extends Component {
         }
     };
 
-    onConfirm = e => {
+    onConfirm = async(e) => {
         e.preventDefault();
         const buy = '구매';
         const wish = '장바구니에 담겠';
         let confirm = false;
 
         const { target: {name, value}} = e;
+        console.log(value);
         const { user_id } = this.state;
         if(name==='buy'){
              confirm = window.confirm(`${buy}하시겠습니까`);
@@ -129,24 +131,27 @@ export default class extends Component {
         if(name==='wish'){
             // true일 경우 결제창으로 넘어감
             // 찜 목록에 추가 후 장바구니 화면
-            const res = Api.addWishListApi(user_id, value);
-            if(res) {
+            const {data: apiResult} = await Api.addWishListApi(user_id, value);
+            console.log(apiResult);
+            if(apiResult.got === true) {
                 alert('이미 있는 제품입니다.');
             } else {
                 alert('추가하였습니다.');
             }
             // 구매 ok일 경우
         } else if(confirm && name==='buy'){
-            Api.addWishListApi(user_id, value);
-            console.log('구매성공');
+            await Api.addWishListApi(user_id, value)
+            .then( res => {
+                console.log('구매성공');
+            });
             this.props.history.push('/wishlist');
         }
     };
 
-    componentDidMount(){
-        this.checkLogin();
+    // componentDidMount(){
+    //     this.checkLogin();
 
-    }
+    // }
 
     
 

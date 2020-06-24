@@ -52,8 +52,9 @@ export default class extends Component {
     let review_result = null;
     let review_count = 0;
     let review_country_photo = "";
-    console.log("user_id: ",user_id);
     const {food_code} = this.state;
+    console.log("user_id: ",user_id);
+    console.log("food_code: ",food_code);
     try {
       // food_id에 대한 정보 가져오는 api
       // user_id = window.sessionStorage.getItem('id');
@@ -62,7 +63,13 @@ export default class extends Component {
       } else { 
         ({data : result} = await axios.get(`http://3.34.97.97/api/detailFood/${food_code}`));
       }
-      ({data : review_result} = await axios.get(`http://3.34.97.97/api/app/reviewList`));
+      // 리뷰 리스트 출력
+      ({data : {review: review_result}} = await axios.post(`http://3.34.97.97/api/app/reviewList`,
+        {
+          food_id: food_code,
+          page: 1,
+        }
+      ));
       console.log("review_result: ");
       console.log(review_result);
       review_count = review_result.length;

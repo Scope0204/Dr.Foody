@@ -85,7 +85,7 @@ class Pie_Chart_With_Legend extends Component {
     return (
       <>
         <label>Pie_Chart_With_Legend</label>
-        <div id="Pie_Chart_With_Legend" style={{ width: "50%", height: "500px" }}></div>
+        <div id="Pie_Chart_With_Legend" style={{ width: "100z%", height: "500px" }}></div>
       </>
     );
   }

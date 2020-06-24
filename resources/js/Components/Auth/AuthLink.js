@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import oc from 'open-color';
 import { Link } from 'react-router-dom';
 
 const Aligner = styled.div`
@@ -10,9 +9,9 @@ const Aligner = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-    color: ${oc.gray[6]};
+    color: #868e96;
     &:hover {
-        color: ${oc.gray[7]};
+        color: #495057;
     }
 `
 
