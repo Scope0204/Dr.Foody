@@ -8,9 +8,11 @@ import Radar from './Radar';
 
 const Container = styled.div`
     display: grid;
+    width:80%;
+    left: 50%;
+    transform: translate(15%);
 `;
 const MoveContainer = styled.div`
-
 `;
 const MoveA = styled.a`
     border
@@ -45,11 +47,11 @@ class Clustering extends React.Component{
         
         return (
             <Container>
-                <MoveContainer>
+                {/* <MoveContainer>
                     <MoveA href="#text_similarity">Text 유사도 분석 결과</MoveA>
-                    <div> / </div>
+                    <span> / </span>
                     <MoveA href="#clustering_title">맛 레벨 분석</MoveA>
-                </MoveContainer>
+                </MoveContainer> */}
                 <ChartContainer id="text_similarity">
                     <Title className="clustering_title">Text 유사도 분석 결과</Title>
                     <Collapsible_force 
@@ -58,7 +60,7 @@ class Clustering extends React.Component{
                 </ChartContainer>
                 <ChartContainer id="clustering_title">
                     <Title className="clustering_title">맛 레벨 분석</Title>
-                    <Radar />
+                    <Radar food_name={food_name}/>
                 </ChartContainer>
             </Container>
 

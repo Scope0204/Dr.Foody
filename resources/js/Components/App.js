@@ -27,6 +27,7 @@ class App extends React.Component{
             id: "",
             nickname: "",
             access_token: "",
+            user_id: "",
             logged: false,
             onLogin: this.onLogin,
             onLogout: this.onLogout,
@@ -34,9 +35,10 @@ class App extends React.Component{
     }
 
     // 로그인
-    onLogin = (id, nickname, access_token) => {
+    onLogin = (id, nickname, user_id, access_token) => {
         this.setState({
             id,
+            user_id,
             nickname,
             access_token,
             logged: true
@@ -64,6 +66,7 @@ class App extends React.Component{
 
     componentDidMount() {
         const id = window.sessionStorage.getItem('id');
+        const user_id = window.sessionStorage.getItem('user_id');
         const nickname = window.sessionStorage.getItem('nickname');
         const access_token = window.sessionStorage.getItem('access_token');
         if(id) {
@@ -71,11 +74,11 @@ class App extends React.Component{
         } else {
             this.onLogout(access_token);
         }
-        console.log(id, " + ", access_token);
+        console.log(id, " + ", user_id, " + ", access_token);
     }
 
     render(){
-        const { id, nickname, access_token, logged, onLogout } = this.state;
+        const { id, nickname, access_token, logged, user_id, onLogout } = this.state;
         return(
             <BrowserRouter>
                 <>
@@ -87,7 +90,7 @@ class App extends React.Component{
                         <Route exact path ="/" component={Home} access_token={access_token} />
                         <Route path ="/search" component={Search} />
                         <Route path ="/search/:search_id" component={Search} />
-                        <Route path ="/searchProduct/:food_code" component={Product} id={id} />
+                        <Route path ="/searchProduct/:food_code" component={Product} id={id} user_id={user_id} />
                         <Route path ="/login" component={Auth} />
                         <Route path ="/regist" component={Auth} />
                         <Route exact path ="/data" component={DataSearch} />

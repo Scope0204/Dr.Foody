@@ -8,8 +8,9 @@ import Store from '../Store/store';
 
 const Container = styled.div`
     position: relative;
-    padding-top: 50px;
-`;
+    
+    `;
+    // padding-top: 7%;
 // Search section
 const SerachContainer = styled.div`
     width: 50%;
@@ -23,20 +24,24 @@ const Form = styled.form`
     position: absolute;
 `;
 const Input = styled.input`
+padding: 0.5em;
+  margin: 0.5em;
     all: unset;
-    font-size: 20px;
-    width: 50%;
-    border: 2px solid #ff5122;
-    border-top-left-radius: 5px 5px; 
-    border-bottom-left-radius: 5px 5px; 
+    font-size: 22px;
+    width: 48%;
+    border: 1.8px solid #ff5122;
+    padding: 5px;
+    margin-top: 20px; 
+    text-align: center;
 `;
 const BtnSearch = styled.button`
+    
     background-color:  #ff5122;
-    border: 0px solid  #ff5122;
+    border: 1px solid  #ff5122;
     color: white;
-    font-size: 21px;
-    border-top-right-radius: 5px 5px; 
-    border-bottom-right-radius: 5px 5px; 
+    font-size: 22px;
+    padding: 9px;
+    padding-top: 10px;
     &: hover{
         opacity: 0.6;
     }

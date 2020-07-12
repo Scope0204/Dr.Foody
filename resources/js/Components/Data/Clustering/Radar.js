@@ -2,53 +2,44 @@ import React from 'react';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import {Api} from '../../api';
 
 /* Chart code */
 // Themes begin
 am4core.useTheme(am4themes_animated);
 // Themes end
 class Radar extends React.Component {
-    componentDidMount(){
+    constructor(props){
+        super(props);
+        this.state = {
+            productName: this.props.food_name,
+            data: null,
+        }
+    }
+    async componentDidMount(){
+        
+        const {productName} = this.state;
+        const {data: {taste_item}} = await Api.tasteFigureApi(productName);
+        this.setState({
+            data: taste_item
+        });
         let chart = am4core.create("Radar", am4charts.RadarChart);
         chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
 
-        chart.data = [
-        {
-            category: "매운맛",
-            value1: 8,
-            value2: 2,
-            value3: 4,
-            value4: 3
-        },
-        {
-            category: "짠맛",
-            value1: 11,
-            value2: 4,
-            value3: 2,
-            value4: 4
-        },
-        {
-            category: "단맛",
-            value1: 7,
-            value2: 6,
-            value3: 6,
-            value4: 2
-        },
-        {
-            category: "신맛",
-            value1: 13,
-            value2: 8,
-            value3: 3,
-            value4: 2
-        },
-        {
-            category: "쓴맛",
-            value1: 12,
-            value2: 10,
-            value3: 5,
-            value4: 1
-        },
-        ];
+        let chart_data = [];
+        for(let i =0; i < taste_item.length; i++){
+            let chart_data_data = {
+                category: taste_item[i].taste_name,
+                taste_count: taste_item[i].taste_count,
+                taste_sum: taste_item[i].taste_sum,
+                taste_rate: taste_item[i].taste_rate.toFixed(3) ,
+            };
+            chart_data.push(chart_data_data);
+        }
+        console.log("chart_data: ");
+        console.log(chart_data, productName);
+        chart.data = chart_data;
+       
 
         chart.padding(20, 20, 20, 20);
 
@@ -63,36 +54,28 @@ class Radar extends React.Component {
         valueAxis.min = 0;
 
         let series1 = chart.series.push(new am4charts.RadarColumnSeries());
-        series1.columns.template.tooltipText = "{name}: {valueY.value}";
+        series1.columns.template.tooltipText = "맛 관련 단어 검출 횟수: {valueY.value}";
         series1.columns.template.width = am4core.percent(80);
-        series1.name = "Series 1";
+        series1.name = "taste_count";
         series1.dataFields.categoryX = "category";
-        series1.dataFields.valueY = "value1";
+        series1.dataFields.valueY = "taste_count";
         series1.stacked = true;
 
         let series2 = chart.series.push(new am4charts.RadarColumnSeries());
         series2.columns.template.width = am4core.percent(80);
-        series2.columns.template.tooltipText = "{name}: {valueY.value}";
-        series2.name = "Series 2";
+        series2.columns.template.tooltipText = "총 맛 레벨 점수: {valueY.value}";
+        series2.name = "taste_sum";
         series2.dataFields.categoryX = "category";
-        series2.dataFields.valueY = "value2";
+        series2.dataFields.valueY = "taste_sum";
         series2.stacked = true;
 
         let series3 = chart.series.push(new am4charts.RadarColumnSeries());
         series3.columns.template.width = am4core.percent(80);
-        series3.columns.template.tooltipText = "{name}: {valueY.value}";
-        series3.name = "Series 3";
+        series3.columns.template.tooltipText = "평균 맛 레벨: {valueY.value}";
+        series3.name = "taste_rate";
         series3.dataFields.categoryX = "category";
-        series3.dataFields.valueY = "value3";
+        series3.dataFields.valueY = "taste_rate";
         series3.stacked = true;
-
-        let series4 = chart.series.push(new am4charts.RadarColumnSeries());
-        series4.columns.template.width = am4core.percent(80);
-        series4.columns.template.tooltipText = "{name}: {valueY.value}";
-        series4.name = "Series 4";
-        series4.dataFields.categoryX = "category";
-        series4.dataFields.valueY = "value4";
-        series4.stacked = true;
 
         chart.seriesContainer.zIndex = -1;
 
@@ -107,6 +90,9 @@ class Radar extends React.Component {
         chart.cursor.lineX.strokeOpacity = 0;
         chart.cursor.lineX.fillOpacity = 0.1;
         chart.cursor.lineX.fill = am4core.color("#000000");
+      chart.exporting.menu = new am4core.ExportMenu();
+      chart.exporting.menu.align = "left";
+      chart.exporting.menu.verticalAlign = "top";
     }
     componentWillUnmount() {
         if (this.chart) {
@@ -118,7 +104,7 @@ class Radar extends React.Component {
         return (
             <>
                 <div>
-                    <div id="Radar" style={{ width: "100%", height: "500px" }}></div>
+                    <div id="Radar" style={{ width: "80%", height: "500px" }}></div>
                 </div>
                 <div style={{ padding:"50px" }} />
                 

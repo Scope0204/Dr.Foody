@@ -21,6 +21,7 @@ class Login extends Component {
             id: "",
             password: "",
             nickname: "",
+            user_id: "",
             error: null
         };
     }
@@ -54,10 +55,16 @@ class Login extends Component {
     };
 
     // 세션 등록
-    signUp = (access_token) => {
+    signUp = async(access_token) => {
         const { id, nickname} = this.state;
-        
+        const {data: {user_id}} = await axios.get('http://3.34.97.97/api/user', {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        });
+        console.log("user_id: ", user_id);
         window.sessionStorage.setItem('id', id);
+        window.sessionStorage.setItem('user_id', user_id);
         window.sessionStorage.setItem('nickname', nickname);
         window.sessionStorage.setItem('access_token', access_token);
         this.props.onLogin;
@@ -70,8 +77,8 @@ class Login extends Component {
     handleLoginButton = e => {
         e.preventDefault();
         const {id, password } = this.state;
-// 로그인 주소: 'http://3.34.97.97/api/app/login' 
-        axios.post('api/login', {
+// 로그인 주소: 'http://3.34.97.97/api/login' 
+        axios.post('http://3.34.97.97/api/login', {
             id,
             // id : id
             password

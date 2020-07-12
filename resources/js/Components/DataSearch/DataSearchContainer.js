@@ -3,48 +3,51 @@ import styled from 'styled-components';
 import DataProdList from './DataProdList';
 import DataProduct from './DataProduct';
 import Message from '../Message'
-
+import ComplexGrid from "./ComplexGrid";
+import CustomizedExpansionPanels from './ExpensionPannel';
 
 const Container = styled.div`
     position: relative;
-`;
+    `;
+    // padding-top: 7%;
 // Search section
 const SerachContainer = styled.div`
 width: 50%;
-position: absolute;
+position: relative;
 padding-top: 200px;
 left: 70%;
 transform: translate(-70%);
 `;
 const Form = styled.form`
 width: 100%;
-position: absolute;
+position: relative;
 `;
 const Input = styled.input`
 padding: 0.5em;
   margin: 0.5em;
     all: unset;
-    font-size: 20px;
-    width: 50%;
-    border: 2px solid #ff5122;
-    border-top-left-radius: 5px 5px; 
-    border-bottom-left-radius: 5px 5px; 
+    font-size: 22px;
+    width: 48%;
+    border: 1.8px solid #ff5122;
+    padding: 5px;
+    margin-top: 20px; 
+    text-align: center;
 `;
 const BtnSearch = styled.button`
+    
     background-color:  #ff5122;
-    border: 0px solid  #ff5122;
+    border: 1px solid  #ff5122;
     color: white;
     font-size: 22px;
-    border-top-right-radius: 5px 5px; 
-    border-bottom-right-radius: 5px 5px; 
+    padding: 9px;
+    padding-top: 10px;
     &: hover{
         opacity: 0.6;
     }
 `;
 
 const ResultContainer = styled.div`
-    padding: 100px;
-    padding-top: 200px;
+    padding: 50px;
     width: 100%;
     height: 100%;
 `;
@@ -59,6 +62,20 @@ transform: translate(-49%);
     background-image: url(${ props => props.bgUrl });
     background-position: center center;
 `;
+const LogoImage2 = styled.div`
+left: 49%;
+top: 100%;
+transform: translate(-49%);
+    position: absolute;
+    display: block;
+    width: 700px;
+    height: 280px;
+    background-size: contain;
+    background-image: url(${ props => props.bgUrl });
+    background-position: center center;
+`;
+
+
 
 const DataSearchContainer = ({ logined, checkUser, onConfirm , handleSubmit, searchTerm, updateTerm, pastTerm, result, loading, error }) => (
         <Container>
@@ -71,11 +88,11 @@ const DataSearchContainer = ({ logined, checkUser, onConfirm , handleSubmit, sea
             </SerachContainer>
             <ResultContainer>
                 { loading ? (
-                    <div>Please wating</div>
+                    <LogoImage2  bgUrl = {require('../../assets/howToUse.png')}></LogoImage2>
                 ) : (
                     <>
                         {result && result.length > 0 && (
-                            <DataProdList title={pastTerm}>
+                            <CustomizedExpansionPanels title={pastTerm}>
                                 {result.map((c, index) => (
                                     // food_id : 제품 번호
                                     // food_name : 제품이름
@@ -85,7 +102,8 @@ const DataSearchContainer = ({ logined, checkUser, onConfirm , handleSubmit, sea
                                     // search_count: 조회 수
                                     // country: 선호 국가
                                     // sex: 선호 성별
-                                    <DataProduct key={index}
+                                    <>
+                                    {/* <DataProduct key={index}
                                             logined = {logined}
                                             food_id ={c.food_id} review_count ={c.review_count}
                                             food_name={c.food_name} food_photo={c.food_photo} 
@@ -95,10 +113,22 @@ const DataSearchContainer = ({ logined, checkUser, onConfirm , handleSubmit, sea
                                             bought ={c.bought}
                                             checkUser = {checkUser}
                                             onConfirm = {onConfirm}
-
+                                    /> */}
+                                    <ComplexGrid 
+                                            key={index}
+                                            logined = {logined}
+                                            food_id ={c.food_id} review_count ={c.review_count}
+                                            food_name={c.food_name} food_photo={c.food_photo} 
+                                            rating={c.point}
+                                            search_count ={c.search_count} country ={c.country}
+                                            sex ={c.sex}
+                                            bought ={c.bought}
+                                            checkUser = {checkUser}
+                                            onConfirm = {onConfirm}
                                     />
+                                    </>
                                 ))}
-                            </DataProdList>
+                            </CustomizedExpansionPanels>
                         )}
                         { error && <Message color="#e74c3c" text={error} />}
                     </>

@@ -4,21 +4,27 @@ import styled from "styled-components";
 
 
 const Container = styled.div`
+width: 100%;
     :not(:last-child){
         margin-bottom: 50px;
     }
-    padding-top: 250px;
+    padding-top: 300px;
+height: 100vh;
+
 `;
 const Title = styled.span`
-    font-size: 16px;
+
+    margin: 60px;
+    font-size: 22px;
     font-weight: 600;
 `;
 const Grid = styled.div`
-display: grid;
-    margin-top: 25px;
-    grid-template-rows: repeat(auto-fill, 200px); 
-    grid-template-columns: repeat(auto-fill, 300px);
-    grid-gap: 20px;
+    display: grid;
+    margin-top: 40px;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    grid-gap: 30px;
+    height: 300px;
 `;
 
 

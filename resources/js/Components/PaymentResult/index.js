@@ -14,6 +14,10 @@ const Wrapper = styled.div`
   right: 0;
   bottom: 0;
 `;
+const ButtonDiv = styled.div`
+  position: absolute;
+  padding-top: 18%;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -84,21 +88,23 @@ class PaymentResult extends React.Component {
       <Wrapper>
         <Container colorType="blue">
           <Icon type='smile' theme="filled" />
-          <p>{`결제 완료하였습니다`}</p>
+          <p>{`결제를 완료하였습니다`}</p>
           <ul>
-            <li>
+            <li style={{fontSize: "20px"}}>
               <span>주문번호</span>
               <span>{order_id}</span>
             </li>
           </ul>
-          <Button size="large" onClick={() => this.props.history.push('/')}>
-            <Icon type="arrow-left" />
-            메인화면으로 돌아가기
-          </Button>
-          <Button size="large" onClick={() => this.props.history.push(`/mypage/datalist/${id}`)}>
-            <Icon type="arrow-right" />
-            구매내역 확인하기
-          </Button>
+          <ButtonDiv>
+            <Button size="large" onClick={() => this.props.history.push('/')}>
+              <Icon type="arrow-left" />
+              메인화면으로 돌아가기
+            </Button>
+            <Button size="large" onClick={() => this.props.history.push(`/mypage/datalist/${id}`)}>
+              구매내역 확인하기
+              <Icon type="arrow-right" />
+            </Button>
+          </ButtonDiv>
         </Container>
       </Wrapper>
     );

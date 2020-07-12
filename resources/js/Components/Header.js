@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Link, withRouter} from "react-router-dom";
 
 const Container = styled.div`
-    color: white;
+    color: black;
     position: fixed;
     top:0;
     left:0;
@@ -12,16 +12,16 @@ const Container = styled.div`
     display:flex;
     align-items: center;
     padding: 0px 10px;
-    box-shadow: 0px 1px 5px 2px rgba(0,0,0,0.8);
     z-index: 10;
+    box-shadow: 0px 1px 5px 2px rgba(0,0,0,0.8);
     background-color: #ff5122;
-`;
+    `;
 // rbga(20, 20, 20, 0.8); -> background-color
 const LogoImage = styled.div`
     height: 100%;
     width: 30%;
     position: absolute;
-    color: white;
+    color: black;
     `;
     // background-size: cover;
     // background-position: center center;
@@ -41,10 +41,7 @@ const Item = styled.li`
     position: relative;
     font-size: 25px;
     font-weight: bold;
-    &: hover {
-        background-color: #ff5122;
-    }
-    
+    color:white;
     align-items: center;
     justify-content: center;
     text-decoration: none;
@@ -52,13 +49,13 @@ const Item = styled.li`
 const LogItem = styled.li`
     position: relative;
     font-size: 25px;
-    font-weight: bold;
-    &: hover {
-        background-color: #ff5122;
-    }
     list-style: none; 
     left: 70%;
-`;
+    font-weight: bold;
+    `;
+        // &: hover {
+        //     background-color: white;
+        // }
 const SLink = styled(Link)`
     height: 50px;
     display: flex;

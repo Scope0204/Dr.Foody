@@ -11,15 +11,16 @@ const globalStyles = createGlobalStyle`
         box-sizing: border-box;
     }
     body{
+        top:7%;
         width: 100%;
         height: 100%;
-        padding-top: 50px;
         font-family:-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
         font-size: 12px;
         color: #696969;
     }
-`;
-
+    `;
+    
+    // color:inherit; #ff5122
 // padding-top: 55px;
 
 // *: 모든 elementes

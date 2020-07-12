@@ -33,9 +33,15 @@ const BUY_DATA = 'selldata';
 const MY_DATA = 'selldataList';
 const DETAIL_FOOD2 = 'detailFood2';
 const COUNTRY_DATA = 'countryData';
+// laravel review crud
+const REVIEW_DELITE = '/app/reviewDelete';
+const REVIEW_UPDATE = '/app/reviewUpdate';
+const REVIEW_WRITE = '/app/reviewWrite';
 // 플라스크
 const CLUSTERUNG = 'foodDict';
 const FOOD_KEY_WORD = 'foodKeyWord';
+const PREDICT_REVIEW = 'predictReview';
+const TASTE_FIGURE ='tasteFigure';
 
 export const Api = {
     addWishListApi: (user_id, food_id) => api.post(ADD_WEISH_LIST, {user_id, food_id}),
@@ -56,11 +62,21 @@ export const Api = {
     myDataApi: user_id => api.get(`${MY_DATA}/${user_id}`),
     detailFood2Api: food_id => api.get(`${DETAIL_FOOD2}/${food_id}`),
     countryDataApi: food_id => api.get(`${COUNTRY_DATA}/${food_id}`),
+    // 리뷰 CRUD
+    reviewDeleteApi: review_id => api.post(REVIEW_DELITE, {review_id}),
+    reviewUpdateApi: (content, review_id, point, taste) => api.post(REVIEW_UPDATE, {content, review_id, point, taste}),
+    reviewWriteApi: (user_id, food_id, language_code, content, taste, point,
+        hot, sweet, sour, bitter, salty) => api.post(REVIEW_WRITE, {
+            user_id, food_id, language_code, content, taste, point,
+             hot, sweet, sour, bitter, salty,}),
+
+    // flask api
     clusteringApi: productName => clustering_api.post(CLUSTERUNG, {productName}),
     // productNameKeyWord = 제품명, productNameList = 배열
     foodKeyWordApi: (food_name, productNameList) => clustering_api.post(FOOD_KEY_WORD, {
             productNameKeyWord: food_name, 
             productNameList,
     }),
-    
+    tasteFigureApi: (productName) => clustering_api.post(TASTE_FIGURE, {productName}),
+    predictReviewApi: review => clustering_api.post(PREDICT_REVIEW, {review}),
 };

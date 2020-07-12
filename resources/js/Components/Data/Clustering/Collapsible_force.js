@@ -199,6 +199,10 @@ class Collapsible_force extends React.Component{
             console.log("excel_data: ",excel_data);
             
         // 엑셀 데이터 ===================================================================
+        // chart.data = data;
+      chart.exporting.menu = new am4core.ExportMenu();
+      chart.exporting.menu.align = "left";
+      chart.exporting.menu.verticalAlign = "top";
         this.setState({
             excel_data,
             columns,

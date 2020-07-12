@@ -7,6 +7,7 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
+    padding-top: -7%;
 `;
 const LogoImage = styled.div`
     height: 100%;
@@ -42,6 +43,8 @@ const SLink = styled(Link)`
     text-decoration: none;
 `;
 const ImageContainer = styled.div`
+top: 10%;
+transform: translate(-10% 50%);
 width:100%;
 height: 100vh;
 display:block;  
@@ -50,7 +53,6 @@ const IfDiv = styled.div`
     width:100%;
     height: 100%;
     background-image: url(${props => props.bgImage});
-    background-size: cover;
     background-position: center center;
     
     opacity: 1;

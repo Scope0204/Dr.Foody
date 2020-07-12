@@ -6,12 +6,18 @@ import Store from "../Store/store";
 
 import ReviewList from './ReviewList';
 import Reviews from './Reviews';
+// antd
+import { Input, Button } from 'antd';
+
+const { TextArea } = Input
 
 const Container = styled.div`
-    height: calc(100vh - 50px);
-    width: 100%;
+    height: calc(100vh - 100px);
+    width: 80%;
     position: relative;
-    padding: 50px;
+    left: 50%;
+    transform: translate(-50%);
+    border: 1px solid red;
 `;
 
 const Content = styled.div`
@@ -23,17 +29,22 @@ const Content = styled.div`
 `;
 
 const Cover = styled.div`
-    width: 20%;
-    height: 40%;
+width: 20%;
+height: 30%;
     background-image: url(${props => props.bgImage});
     background-position: center center;
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;    
+    left: 40%;
+    transform: translate(35%, 30%);
+    top: 10%;
 `;
 
 const Data = styled.div`
     width: 70%;
-    margin-left: 50px;
+    margin-left: 10px;
+    left: 50%;
+    transform: translate(20%, 50px);
 `;
 const Title = styled.h1`
     font-size: 45px;
@@ -63,6 +74,10 @@ const Overview = styled.div`
 const Div = styled.div`
     color: red;
 `;
+const TextAreaContainer = styled.div`
+    width: 50%;
+    transform: translate(50%, 20%);
+`;
 
 // food_id: 1,
   // company_name: "(주)농심",
@@ -76,9 +91,13 @@ const Div = styled.div`
   // sex: "여자"
 const ProductPresenter = ({ 
     result, 
+    user_id, 
+    id, 
     review_result, 
     review_count,
-
+    logged,
+    // 함수
+    getReviewList,
     loading, error}) => 
     (
         <>
@@ -113,20 +132,30 @@ const ProductPresenter = ({
                             </Data>
                         </Content>
                 )}
-                {review_result && review_result.length > 0 && (
-                    <ReviewList review_count={review_count} >
-                        {review_result.map( (r, index) => (
-                            <Reviews 
-                            // review_date, review_content, review_point, user_nickname, review_country
-                                key = {index}
-                                review_date={r.review_date}
-                                review_content={r.review_content}
-                                review_point={r.review_point}
-                                user_nickname={r.user_nickname}
-                                country_code={r.country_code}
+                {/* {logged && (
+                        <>
+                        <TextAreaContainer>
+                            <TextArea
+                                // value={value}
+                                // onChange={this.onChange}
+                                placeholder="리뷰를 작성해 주세요"
+                                autoSize={{ minRows: 3, maxRows: 5 }}
                             />
-                        ))}
-                    </ReviewList>
+                            <Button onClick={handleCreate}>등록</Button>
+                        </TextAreaContainer>
+                        </>
+                )
+                } */}
+                {review_result && review_result.length > 0 && (
+                    <ReviewList 
+                        review_count={review_count} 
+                        review_result={review_result}
+                        logged={logged}
+                        user_id={user_id}
+                        id={id}
+                        getReviewList={getReviewList}
+                        // 수정 삭제 등록 버튼 함수
+                    />
                 )}
             </Container>
     </>

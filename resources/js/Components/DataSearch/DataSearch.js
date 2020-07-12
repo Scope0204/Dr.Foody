@@ -11,7 +11,7 @@ export default class extends Component {
             searchTerm: "",
             pastTerm: "",
             result: null,
-            loading: false,
+            loading: true,
             error: null,
             user_id : window.sessionStorage.getItem('id'),
             logined : false,

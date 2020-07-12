@@ -1,11 +1,10 @@
 import React from 'react';
-import DataPresenter from './DataPresenter';
 import {BaseUrl} from '../api';
 import axios from 'axios';
 import moment from 'moment';
 import Moment from 'react-moment';
 import {Api} from '../api';
-
+import MediaControlCard from './DataPresent2'; 
 // User inform
 import XYChart from './Charts/XYChart';
 import Area_With_Time from './Charts/Area_With_Time';
@@ -51,52 +50,128 @@ export default class extends React.Component{
 
             search_condition: null,
             all_data_result: null,
+            third_data_result: null,
             source: 0,
+            loading: false,
+            reviewed: false,
+
+            visible: false,
+            error: false,
             // // date picker
             // startDate: moment().format('YYYY-MM-DD'),
             // endDate: moment().format('YYYY-MM-DD')
         }
         this.refreshCondition = this.refreshCondition.bind(this);
+        this.refreshThirdCondition = this.refreshThirdCondition.bind(this);
     }
 
+    // 전체 데이터 받아오기
     refreshCondition = async(search_condition) => {
-        const { food_id} = this.state;
         console.log("refreshCondition: 실행");
         let source = 0;
+        let reviewed = false;
         const sdate = search_condition.previous_term;
         const edate = search_condition.later_term;
         if(search_condition.second_condition === 'views'){
             source = 0;
+            reviewed = false;
         } else if (search_condition.second_condition === 'reviews') {
             source = 1;
+            reviewed = true;
         }
-        const {data: all_data_result} = await Api.service_exApi(food_id, source, sdate, edate);
+        const {data: all_data_result} = await Api.service_exApi(search_condition.food_id, source, sdate, edate);
         this.setState({
             all_data_result,
             source,
+            reviewed,
         });
         console.log(all_data_result);
         console.log(source);
+    }
+
+
+    refreshThirdCondition = async(search_condition) => {
+        let source = 0;
+        let category = 0;
+        let reviewed = false;
+        const sdate = search_condition.previous_term;
+        const edate = search_condition.later_term;
+        if(search_condition.second_condition === 'views'){
+            source = 0;
+            reviewed = false;
+        } else if (search_condition.second_condition === 'reviews') {
+            source = 1;
+            reviewed = true;
+        }
+        // 3차가 성별 일 때
+        if(search_condition.third_condition === 'gender'){
+            category = 1;
+        } else if (search_condition.third_condition === 'age'){
+            category = 2;
+        } else if (search_condition.third_condition === 'country'){
+            category = 3;
+        } else if (search_condition.third_condition === 'term'){
+            category = 4;
+        }
+        const {data: third_data_result} = await axios.post('http://3.34.97.97/api/chartMake', {
+            food_id: search_condition.food_id,
+            source,
+            category,
+            sdate,
+            edate
+        });
+        if(third_data_result.data[0]===null){
+            this.setState({
+                error: true
+            });
+        } else {
+            this.setState({
+                third_data_result,
+                source,
+                reviewed,
+                error: false,
+            });
+
+        }
+        console.log('third_data_result: ', third_data_result);
+        console.log('3차 트리 검색 조건 확인: ', search_condition.food_id,
+        source,
+        category,
+        sdate,
+        edate);
     }
 
     // 검색 동작
     handleSearch= e => {
         e.preventDefault();
         console.log('Worked Search button');
-        const {previous_term,later_term, second_condition, third_condition} = this.state;
-        console.log('검색 조건 확인');
+        const {previous_term,later_term, second_condition, third_condition,food_id} = this.state;
         // axios 동작 search_condition 보내기
         const search_condition = {
             previous_term,
             later_term,
             second_condition,
             third_condition,
+            food_id
         };
+        console.log('검색 조건 확인: ',search_condition);
+        this.setState({
+            loading: true
+        });
+        // 2차 트리 일 때 (리뷰 or 조회수만)
+        // 3차 트리 일 때 (2차트리 + 3차트리)
+        if(second_condition!=="" && third_condition!==""){
+            this.refreshThirdCondition(search_condition);
+        }   
         this.refreshCondition(search_condition);
         this.setState({
-            search_condition
+            search_condition,
         });
-        console.log("second_condition: ", second_condition);
+        setTimeout(() => {
+            this.setState({
+                loading: false,
+                    visible: true})
+              }, 2000);
     };
 
     // 날짜 설정
@@ -119,13 +194,19 @@ export default class extends React.Component{
         e.preventDefault();
         const { target : {name, value}} = e;
         console.log('name: ',name);
+        this.setState({
+            visible: false
+        });
         if(name==='first'){
             this.setState({
-                first_condition: value
+                first_condition: value,
+                second_condition:  "",
+                third_condition: ""
             });
         } else if (name==='second'){
             this.setState({
-                second_condition: value
+                second_condition: value,
+                third_condition: ""
             });
         } else if(name==='third'){
             this.setState({
@@ -135,7 +216,8 @@ export default class extends React.Component{
         console.log('   condition: ', this.state.first_condition,this.state.second_condition,this.state.third_condition);
     };
 
-    
+    // key 
+
       componentWillUnmount() {
         if (this.chart) {
           this.chart.dispose();
@@ -153,21 +235,6 @@ export default class extends React.Component{
             // food_id에 대한 정보 가져오는 api
             const {data : prod_search_result} = await Api.detailFood2Api(food_id);
             const {data : prod_value_result} = await Api.countryDataApi(food_id);;
-            // 클러스터링 데이터 가져오기
-            // const {data: {keyword_dict:collapsible}} = await Api.clusteringApi('불닭볶음면');
-            // const {data: {keyword_dict:collapsible}} = 
-            // await axios({
-            //     method: "post",
-            //     url: "http://35.230.114.182:5000/foodDict",
-            //     headers: {
-            //       //응답에 대한 정보
-            //       Accept: "application/json", // 서버가 json 타입으로 변환해서 사용
-            //       "Content-Type": "application/json",
-            //     },
-            //     data: {
-            //       productName: food_name,
-            //     },
-            //   });
             // 유저 정보 데이터 가져오기
             console.log("DATA food_id: ");
             console.log(prod_search_result);
@@ -189,16 +256,16 @@ export default class extends React.Component{
       render() {
           const {
             chart, food_id,
-            previous_term, later_term,   
-            first_condition,second_condition,third_condition, search_condition, all_data_result, source,
-            prod_search_result,prod_value_result,  loading} = this.state;
+            previous_term, later_term,  visible, error,
+            first_condition,second_condition,third_condition, search_condition, all_data_result, source, third_data_result,
+            prod_search_result,prod_value_result,  loading,  reviewed} = this.state;
         return (
             // <>
             //     이걸로 감싸고
             //     chart component들을 만든 다음에 DataPresenter 밑에 같이 랜더해보기
             // </>
             <>
-                <DataPresenter 
+                <MediaControlCard 
                     chart = {chart}
                     food_id = {food_id}
                     previous_term = {previous_term} 
@@ -209,9 +276,14 @@ export default class extends React.Component{
                     prod_search_result= {prod_search_result}
                     prod_value_result= {prod_value_result}
                     search_condition= {search_condition}
+                    // data
                     all_data_result= {all_data_result}
+                    third_data_result= {third_data_result}
                     source= {source}
                     loading = {loading}
+                    reviewed = {reviewed}
+                    visible = {visible}
+                    error = {error}
                     handleSearch = {this.handleSearch}
                     handleCondition = {this.handleCondition}
                     handleDateChange = {this.handleDateChange}

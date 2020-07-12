@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Message from '../../Message';
 import ProductList from './ProductList';
 import Product from './Product';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
     width: 100%;
@@ -20,6 +21,15 @@ const ImageContainer = styled.div`
 `;
 const CartImage = styled.div`
 position:absolute;
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-image: url(${ props => props.bgUrl });
+    background-position: center center;
+`;
+const WishImage = styled.div`
+position:absolute;
+left: 50%;
     width: 50px;
     height: 50px;
     background-size: cover;
@@ -62,6 +72,9 @@ const DataListPresenter = ({bought_list}) => (
     <Container>
         <ImageContainer>
             <CartImage bgUrl = {require('../../../assets/logo.jpg')} />
+            <Link to='/wishlist'>
+                <WishImage bgUrl = {require('../../../assets/cart.png')}/>
+            </Link>
             <Text>구매 데이터 목록 </Text>
         </ImageContainer>
         <Border />

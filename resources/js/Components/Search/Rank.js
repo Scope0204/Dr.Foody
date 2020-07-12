@@ -4,40 +4,60 @@ import {Link} from 'react-router-dom';
 
 //Rank section
 const RankContainer = styled.div`
-    width: 100%;
+    width: 30%;
     height: 100%;
     display: flex;
     padding-top: 300px;
+    margin-left:34.7%;
 `;
 const RankCardSt = styled.div`
     width: 30%;
     height: 100%;
     flex:1;
-    margin-left: 10px;
-    border: 2px solid #FFDAAB;
-    text-align: center center;
-`;
+    margin: 0 auto;
+    background-color: #ff5122;
+    
+    box-shadow: 2px 3px 3px 2px gray;
+    
+    text-align: center;
+    padding-top: 10px;
+    
+    font-size: 15px;
+    
+    `;
+    // border: 6px ridge #ff5722;
+//border-radius: 10px 10px 10px 10px;
 const RankListSt = styled.ul`
     width: 100%;
     height: 100%;
     list-style: none;
     display: block;
-`;
+    
+    text-align: center;
+    
+    padding-top: 10px;
+    font-size: 20px;
+    background-color: white;
+    `;
+    // border-top: 1px solid gray;
 const RankTitle = styled.h1`
     font-size: bold;
+    color : white;
+    font-size: 15px;
+    padding-bottom:10px;
+    
 `;
 const RankItem = styled.li`
     font-size: 20px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    font-weight: bold;
 `;
+
+
 const items = [
-    {   category: '성별',
-        prod: ['신라면', '불닭볶음면', '자가비', '홍초', '마켓오']
-    },
-    {   category: '나라',
-        prod: ['신라면', '불닭볶음면', '자가비', '홍초', '마켓오']
-    },
-        {   
-        category: '기간',
+    {   
+        category: '인기 검색 제품',
         prod: ['신라면', '불닭볶음면', '자가비', '홍초', '마켓오']
     }
 ];
@@ -48,6 +68,7 @@ class RankCard extends Component {
         return (
             <RankCardSt>
                 <RankTitle>{this.props.category}</RankTitle>
+
                 {this.props.prod.map((p, i)=>{
                     return <RnakList key={i} food_code={i} prod={p} />
                 })}
