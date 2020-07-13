@@ -113,25 +113,7 @@ export default class TasteImg extends React.Component {
           style={{
             paddingBottom: 5,
           }}
-        >
-          {/* <TasteTxt
-            style={
-              this.props.taste_name == "매운맛"
-                ? { color: "red" }
-                : this.props.taste_name == "단맛"
-                ? { color: "orange" }
-                : this.props.taste_name == "신맛"
-                ? { color: "yellow" }
-                : this.props.taste_name == "쓴맛"
-                ? { color: "green" }
-                : this.props.taste_name == "짠맛"
-                ? { color: "blue" }
-                : null
-            }
-          >
-            {this.props.taste_name}
-          </TasteTxt> */}
-        </View>
+        ></View>
         <View style={{ flexDirection: "row" }}>
           {topTaste}
           {tasteLv}
