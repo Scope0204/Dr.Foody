@@ -56,7 +56,10 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims() {
         // 수정하여 jwt토큰에 정보 추가 가능
-        return [];
+        return ['user_id' => $this->user_id, 
+                'user_nickname' =>$this->user_nickname,
+                'id'=>$this->id
+            ];
     }
 
     //  나중에 해제하기

@@ -6,11 +6,7 @@ import AuthButton from './AuthButton';
 import AuthLink from './AuthLink';
 import styled, { ThemeConsumer } from 'styled-components';
 import axios from "axios";
-
-const CheckInput = styled.input`
-    width: 100%;
-`;
-
+import RegisterPresenter from './RegisterPresenter';
 
 class Register extends Component {
     constructor(props){
@@ -34,6 +30,13 @@ class Register extends Component {
             bitter: 1,
             photo: null,
             email: "",
+
+            // 국가 정보
+            DB_Country: [{
+                country_code: null,
+                country_name_kr: null
+            }],
+            DB_language: null,
         }
     }
 
@@ -250,44 +253,71 @@ class Register extends Component {
         console.log("photo: "+ photo);
     };
 
-    componentDidMount(){
-        axios.get('/api/regist')
-        .then( res => {
-            console.log(res);
-        })
-        .catch( error => {
-            console.log(error);
+
+    async componentDidMount(){
+        let result_country = null;
+        try {
+            ({data: { country : result_country }} = await axios.get('http://3.34.97.97/api/registData'));
+        }  catch {
+            this.setState({
+                error: '나라 정보 받기 실패'
+            });
+        } finally{
+            console.log('작동');
+        }
+        this.setState({
+            DB_Country:result_country
         });
+        console.log(this.state.DB_Country);
     }
     
     render() {
         // const {handlePage} = this.handlePage;
+        // const { DB_Country } = this.state;
+        console.log('랜더 후');
+        // console.log(this.state.DB_Country);
+        const test = [
+            {
+                country_code : 41,
+                country_name_kr: '한국'
+            }
+        ] 
+        const { page,id ,password, password_confirmation,nickname,country,country_code,gender,
+            // 남=1, 여=0
+            birth,material,sweet,salty,hot,sour,bitter,photo,email,
+            // 국가 정보
+            DB_Country,
+            DB_language,} = this.state;
         return (
-            <AuthContent title="회원가입">
-                <InputWithLabel label="아이디" name="id" placeholder="아이디"  onChange={this.updateInform} />
-                <InputWithLabel label="이메일" name="email" placeholder="이메일"  onChange={this.updateInform} />
-                <InputWithLabel label="비밀번호" name="password" placeholder="비밀번호" type="password" onChange={this.updateInform} />
-                <InputWithLabel label="비밀번호 확인" name="password_confirmation" placeholder="비밀번호 확인" type="password"  onChange={this.updateInform} />
-                <InputWithLabel label="닉네임" name="nickname" placeholder="닉네임"  onChange={this.updateInform} />
-                <SelectWithLabel label="국적" name="country" input={['한국',  '일본', '미국', '중국']}  onChange={this.updateInform} />
-                <SelectWithLabel label="성별" name="gender" input={['남자', '여자']} onChange={this.updateInform} />
-                {/* radio handle 만들기 */}
-                <InputWithLabel label="생년월일" name="birth" type="date" onChange={this.updateInform} />
-                <AuthButton onClick={this.handleFormButton}>회원가입</AuthButton>
-                <AuthButton onClick={this.handlePageButton}>다음페이지</AuthButton>
-                {/* 기피 원재료 선택 */}
-                <CheckWithLabel label="빠른 선택" name="fast" type="checkbox" input={['할랄', '비건', '코셔']} onChange={this.updateInform} />
-                <CheckWithLabel label="기피원재료" name="material" type="checkbox" input={['계란', '유제품', '고기', '야채', '갑각류']} onClick={this.updateMaterial}/>
-                {/* 맛 정보 선택 */}
-                <InputWithLabel label="단맛" name="sweet" placeholder="1-5"  onChange={this.updateInform}/>
-                <InputWithLabel label="쓴맛" name="bitter" placeholder="1-5"  onChange={this.updateInform} />
-                <InputWithLabel label="매운맛" name="hot" placeholder="1-5" onChange={this.updateInform} />
-                <InputWithLabel label="신맛" name="sour" placeholder="1-5"  onChange={this.updateInform} />
-                <InputWithLabel label="짠맛" name="salty" placeholder="1-5" onChange={this.updateInform} />
-                {/* <CheckWithLabel label="빠른 선택" type="checkbox" value="select" input={['할랄', '비건', '코셔']} /> */}
-                <AuthLink to="/login" children="로그인"></AuthLink>
-                {/* <PageButton>다음</PageButton> */}
-            </AuthContent>
+
+            <RegisterPresenter
+                handleFormButton = {this.handleFormButton}
+                handlePageButton = {this.handlePageButton}
+                updateInform = {this.updateInform}
+                updateMaterial = {this.updateMaterial}
+                page = {page}
+                id = {id}
+                password= {password}
+                password_confirmation= {password_confirmation}
+                nickname= {nickname}
+                country= {country}
+                country_code= {country_code}
+                gender= {gender}
+                // 남=1 여=0
+                birth= {birth}
+                material= {material}
+                sweet= {sweet}
+                salty= {salty}
+                hot= {hot}
+                sour= {sour}
+                bitter= {bitter}
+                photo= {photo}
+                email= {email}
+    
+                // 국가 정보
+                DB_Country= {DB_Country}
+                DB_language= {DB_language}
+            />
         );
     }
 }

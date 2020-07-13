@@ -24,6 +24,7 @@ class RegistController extends Controller
 
     public function store(Request $request)
     {
+        /*
         $validateData = Validator::make($request->all(), [
         // $validateData = $request->validate([
             'id'=> 'required|string|max:255', 
@@ -48,10 +49,11 @@ class RegistController extends Controller
                 'message'=>$validateData->messages()
             ], 200);
         }
+        */
         // $table->bigIncrements('language_code');
         //     $table->string('language');
         //     $table->string('keyword');
-        $photo = null;
+        $photo = ' ';
         // 기본 한국어로 지정
         $language_code = 1;
         // language_code
@@ -65,28 +67,29 @@ class RegistController extends Controller
         //      392 일본
         //      156 중화인민공화국
         //      840 미국
+        /*
         switch($request->country_code){
             case 156: $language_code = 4; break;
             case 392: $language_code = 3; break;
             case 840: $language_code = 2; break;
             default: $language_code = 1;
         }
+        */
         // 회원 정보 저장
         $user = User::create([
-            'user_id' => $request->id, 
-            'user_mail' => $request->email, 
+            'id' => $request->id, 
             'password' => bcrypt($request->password), 
             'user_nickname' => $request->nickname, 
-            'photo' => $photo, 
-            'country_code' => $request->country_code, 
-            'language_code' => $language_code, 
-            'user_gender' => $request->gender, 
-            'user_birth' => $request->birth,
-            'user_sweet' => $request->sweet, 
-            'user_bitter' => $request->bitter, 
-            'user_hot' => $request->hot, 
-            'user_sour' => $request->sour, 
-            'user_salty' => $request->salty
+            'user_photo' => $photo, 
+            'country_code' => 410, 
+            'language_code' => 1, 
+            'user_sex' => 1, 
+            'user_birth' => '1996-08-15',
+            'user_sweet' => 4, 
+            'user_bitter' => 2, 
+            'user_hot' => 2, 
+            'user_sour' => 2, 
+            'user_salty' => 3
         ]);
         // 회원 기피 재료 저장
 

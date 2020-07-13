@@ -8,6 +8,12 @@ class AvoidMaterial extends Model
 {
     protected $fillable = [
         'user_id',
-        'material_id'
+        'keyword_id'
     ];
+
+    public function keyword(){
+        return $this->belongsTo(MaterialKeyword::class,'keyword_id','keyword_id');
+    }
+
+
 }

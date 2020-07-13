@@ -40,29 +40,14 @@ class Search extends Component {
     // async() =>{
         const { searchTerm } = this.state;
         this.setState({ loading: true});
-        // 쿼리 던지고 받기
-        //  api로 만들기 
-        // try
-        // const {data: {result}} = await searchApi.search(query);
-        // catch{
-        //     tihs.setState({
-        //         error: "검색 결과가 없습니다"
-        //     });
-        // } finally{
-        //     this.setState({ loading: false });
-        // }
-
+        console.log('검색 작동');
         try {
-            const {data :{ result:result }} = 
-                await axios.get('/api/searchList/',{
-                    params: {
-                        search_id: searchTerm
-                    }
-                });
+            const {data : result} = 
+                await axios.get(`http://3.34.97.97/api/searchFood/${searchTerm}`);
             this.setState({
                 result
             });
-            // console.log(this.state.result);
+            console.log(this.state.result);
         } catch {
             this.setState({ error: "Can't search"});
         } finally {
@@ -70,6 +55,20 @@ class Search extends Component {
         }
     }
     
+    // update() {
+    //   const { index, items } = this.state;
+    //   const { history } = this.props;
+  
+    //   storage(index).then((res) => {
+    //     this.setState({
+    //       index: res.next,
+    //       items: items.concat(res.pokemons),
+    //     }, () => {
+    //       history.replace(undefined, { ...this.state });
+    //     });
+    //   });
+    // }
+
     // componentDidMount() {
     //     const { history, location } = this.props;
     //     if (!location.state) {
@@ -79,7 +78,8 @@ class Search extends Component {
     //       history.replace(undefined, undefined);
     //     }
     //   }
-
+    
+    
     render(){
         const {searchTerm, pastTerm, result, loading, error } = this.state;
         return (

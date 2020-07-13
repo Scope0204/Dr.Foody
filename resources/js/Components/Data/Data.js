@@ -1,20 +1,23 @@
 import React from 'react';
-import DataPresenter from './DataPresenter';
+import {BaseUrl} from '../api';
 import axios from 'axios';
 import moment from 'moment';
 import Moment from 'react-moment';
-
-// Chart import 
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4charts from "@amcharts/amcharts4/charts";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import {Api} from '../api';
+import MediaControlCard from './DataPresent2'; 
+// User inform
 import XYChart from './Charts/XYChart';
+import Area_With_Time from './Charts/Area_With_Time';
+import Rader from './Charts/Rader';
+import Map_with_bubbles from './Charts/Map_with_bubbles';
+
 import Redial from './Charts/Redial';
 import SimpleColumn from './Charts/SimpleColumn';
 import Pictorial_Stacked from './Charts/Pictorial_Stacked';
 import Pie_Chart_With_Legend from './Charts/Pie_Chart_With_Legend';
-import RegionTable from './Charts/RegionTable';
-
+import ExportExcel from './Charts/ExportExcel';
+// Clustering inform
+import Clustering from './Clustering/Clustering';
 
 // import 'react-dates/initialize';
 // import 'react-dates/lib/css/_datepicker.css';
@@ -26,238 +29,269 @@ export default class extends React.Component{
     constructor(props){
         super(props);
         const test_moment = new Date();
+        const {
+            match:{params:{food_id}}
+          } = this.props;
         this.state = {
             moment: new Date(),
-            genesis_term: test_moment,
-            previous_term: test_moment,
-            later_term: test_moment,
-            termCheck: "",
-            condition: "",
-            date_condition: "",
-            result: null,
+            previous_term: moment().format('YYYY-MM-DD'),
+            later_term: moment().format('YYYY-MM-DD'),
+            prod_search_result: null,
+            prod_value_result: null,
             loading: false,
-            chart: 'chartdiv'
+            food_id: food_id,
+            chart: 'chartdiv',
+            
+            collapsible: null,
 
+            first_condition: "",
+            second_condition: "",
+            third_condition: "",
+
+            search_condition: null,
+            all_data_result: null,
+            third_data_result: null,
+            source: 0,
+            loading: false,
+            reviewed: false,
+
+            visible: false,
+            error: false,
             // // date picker
             // startDate: moment().format('YYYY-MM-DD'),
             // endDate: moment().format('YYYY-MM-DD')
         }
+        this.refreshCondition = this.refreshCondition.bind(this);
+        this.refreshThirdCondition = this.refreshThirdCondition.bind(this);
     }
 
-   
-
-    // 조건 설정
-    // handleControlButton= e => {
-    //     e.preventDefault();
-    //     console.log('Worked Control button');
-    // };
-
-    // 기간 설정
-    handleTerm= e => {
-        e.preventDefault();
-        const { target : {name, value}} = e;
-        // const {test_moment, genesis_term} = this.state;
-        // const statndard_term = new Date('2020-05-01');
-        let previous_val, later_val = moment().format('YYYY-MM-DD');
-        // if(name === 'previous'){
-        //     previous_val = value;
-        // } else if (name === 'later'){
-        //     later_val = value
-        // } else if (name==='all'){
-        //     // 서비스 시작일 부터 지금까지
-        //     previous_val = statndard_term;
-        //     later_val = genesis_term
-        // } else if (name==='today'){
-        //     previous_val = genesis_term;
-        //     later_val = genesis_term
-        // } else if (name==='week'){
-        //     previous_val = moment.add('days', -7);
-        //     later_val = test_moment;
-        // } else if (name==='month'){
-        //     previous_val = moment.add('months', -1);
-        //     later_val = genesis_term
-        // }
+    // 전체 데이터 받아오기
+    refreshCondition = async(search_condition) => {
+        console.log("refreshCondition: 실행");
+        let source = 0;
+        let reviewed = false;
+        const sdate = search_condition.previous_term;
+        const edate = search_condition.later_term;
+        if(search_condition.second_condition === 'views'){
+            source = 0;
+            reviewed = false;
+        } else if (search_condition.second_condition === 'reviews') {
+            source = 1;
+            reviewed = true;
+        }
+        const {data: all_data_result} = await Api.service_exApi(search_condition.food_id, source, sdate, edate);
         this.setState({
-            previous_term: previous_val,
-            later_term: later_val,
-            date_condition: value
+            all_data_result,
+            source,
+            reviewed,
         });
-        console.log('Worked Term button');
-        console.log("   previous: ",this.state.previous_term);
-        console.log("   later: ",this.state.later_term);
-        console.log("   date_condition: ",this.state.date_condition);
-    };
+        console.log(all_data_result);
+        console.log(source);
+    }
+
+
+    refreshThirdCondition = async(search_condition) => {
+        let source = 0;
+        let category = 0;
+        let reviewed = false;
+        const sdate = search_condition.previous_term;
+        const edate = search_condition.later_term;
+        if(search_condition.second_condition === 'views'){
+            source = 0;
+            reviewed = false;
+        } else if (search_condition.second_condition === 'reviews') {
+            source = 1;
+            reviewed = true;
+        }
+        // 3차가 성별 일 때
+        if(search_condition.third_condition === 'gender'){
+            category = 1;
+        } else if (search_condition.third_condition === 'age'){
+            category = 2;
+        } else if (search_condition.third_condition === 'country'){
+            category = 3;
+        } else if (search_condition.third_condition === 'term'){
+            category = 4;
+        }
+        const {data: third_data_result} = await axios.post('http://3.34.97.97/api/chartMake', {
+            food_id: search_condition.food_id,
+            source,
+            category,
+            sdate,
+            edate
+        });
+        if(third_data_result.data[0]===null){
+            this.setState({
+                error: true
+            });
+        } else {
+            this.setState({
+                third_data_result,
+                source,
+                reviewed,
+                error: false,
+            });
+
+        }
+        console.log('third_data_result: ', third_data_result);
+        console.log('3차 트리 검색 조건 확인: ', search_condition.food_id,
+        source,
+        category,
+        sdate,
+        edate);
+    }
 
     // 검색 동작
     handleSearch= e => {
         e.preventDefault();
         console.log('Worked Search button');
-        this.searchByDate();
+        const {previous_term,later_term, second_condition, third_condition,food_id} = this.state;
+        // axios 동작 search_condition 보내기
+        const search_condition = {
+            previous_term,
+            later_term,
+            second_condition,
+            third_condition,
+            food_id
+        };
+        console.log('검색 조건 확인: ',search_condition);
+        this.setState({
+            loading: true
+        });
+        // 2차 트리 일 때 (리뷰 or 조회수만)
+        // 3차 트리 일 때 (2차트리 + 3차트리)
+        if(second_condition!=="" && third_condition!==""){
+            this.refreshThirdCondition(search_condition);
+        }   
+        this.refreshCondition(search_condition);
+        this.setState({
+            search_condition,
+        });
+        setTimeout(() => {
+            this.setState({
+                loading: false,
+                    visible: true})
+              }, 2000);
     };
-    // 날짜 검색
-    searchByDate = () => {
-        console.log("   previous: ",this.state.previous_term);
-        console.log("   later: ",this.state.later_term);
+
+    // 날짜 설정
+    handleDateChange = (date, dateString) => {
+        
+        const dateFormat = 'YYYY-MM-DD';
+        this.setState({
+            previous_term: dateString[0],
+            later_term:dateString[1],
+        });
+        console.log(date, dateString);
+        const {previous_term,later_term } = this.state;
+        console.log("날짜 변경 확인");
+        console.log(previous_term,later_term);
     }
-    // async() => { 
-    //         const { previous_term, later_term } = this.state;
-    //         this.setState({ loading: true});
-    //         try {
-    //             const {data :{ result:result }} = 
-    //                 await axios.post('/api/data/searchDate',{
-    //                         previous_term,
-    //                         later_term
-    //                 });
-    //             this.setState({
-    //                 result
-    //             });
-    //             console.log(this.state.result);
-    //         } catch {
-    //             this.setState({ error: "Can't search"});
-    //         } finally {
-    //             this.setState({ loading: false});
-    //         }
-        // }
 
     // 조건 설정
     // 버튼 누르면 바로 로딩 버튼은 하나만 가능하게
     handleCondition= e => {
         e.preventDefault();
         const { target : {name, value}} = e;
+        console.log('name: ',name);
         this.setState({
-            condition: value
+            visible: false
         });
-        console.log('Worked Search button');
-        console.log('   Condition: ', this.state.condition);
+        if(name==='first'){
+            this.setState({
+                first_condition: value,
+                second_condition:  "",
+                third_condition: ""
+            });
+        } else if (name==='second'){
+            this.setState({
+                second_condition: value,
+                third_condition: ""
+            });
+        } else if(name==='third'){
+            this.setState({
+                third_condition: value
+            });
+        }
+        console.log('   condition: ', this.state.first_condition,this.state.second_condition,this.state.third_condition);
     };
 
-    // amChart
-    componentDidMount() {
-        const {condition} = this.state;
-        // xy chart, condition = country
-        
-        // if ( condition === 'country') {
-        
-        //     chart.paddingRight = 20;
-        
-        //     let data = [];
-        //     let visits = 10;
-        //     for (let i = 1; i < 366; i++) {
-        //       visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-        //       data.push({ date: new Date(2018, 0, i), name: "name" + i, value: visits });
-        //     }
-        
-        //     chart.data = data;
-        
-        //     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-        //     dateAxis.renderer.grid.template.location = 0;
-        
-        //     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-        //     valueAxis.tooltip.disabled = true;
-        //     valueAxis.renderer.minWidth = 35;
-        
-        //     let series = chart.series.push(new am4charts.LineSeries());
-        //     series.dataFields.dateX = "date";
-        //     series.dataFields.valueY = "value";
-        
-        //     series.tooltipText = "{valueY.value}";
-        //     chart.cursor = new am4charts.XYCursor();
-        
-        //     let scrollbarX = new am4charts.XYChartScrollbar();
-        //     scrollbarX.series.push(series);
-        //     chart.scrollbarX = scrollbarX;
-        
-        //     this.chart = chart;
-        // } else {
-        
-        //     chart.paddingRight = 20;
-        
-        //     let data = [];
-        //     let visits = 10;
-        //     for (let i = 1; i < 366; i++) {
-        //       visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-        //       data.push({ date: new Date(2020, 0, i), name: "name" + i, value: visits });
-        //     }
-        
-        //     chart.data = data;
-        
-        //     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-        //     dateAxis.renderer.grid.template.location = 0;
-        
-        //     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-        //     valueAxis.tooltip.disabled = true;
-        //     valueAxis.renderer.minWidth = 35;
-        
-        //     let series = chart.series.push(new am4charts.LineSeries());
-        //     series.dataFields.dateX = "date";
-        //     series.dataFields.valueY = "value";
-        
-        //     series.tooltipText = "{valueY.value}";
-        //     chart.cursor = new am4charts.XYCursor();
-        
-        //     let scrollbarX = new am4charts.XYChartScrollbar();
-        //     scrollbarX.series.push(series);
-        //     chart.scrollbarX = scrollbarX;
-        
-        //     this.chart = chart;
-        // }
-      }
-    
+    // key 
+
       componentWillUnmount() {
         if (this.chart) {
           this.chart.dispose();
         }
       }
 
+    async componentDidMount() {
+        console.log('DATA componentDidMount 실행: ');
+        const { food_id } =this.state;
+        console.log(food_id);
+        this.setState({
+            loading: true,
+        });
+        try {
+            // food_id에 대한 정보 가져오는 api
+            const {data : prod_search_result} = await Api.detailFood2Api(food_id);
+            const {data : prod_value_result} = await Api.countryDataApi(food_id);;
+            // 유저 정보 데이터 가져오기
+            console.log("DATA food_id: ");
+            console.log(prod_search_result);
+            // console.log("collapsible: ");
+            // console.log(collapsible);
+            this.setState({
+                prod_search_result,
+                prod_value_result,
+                loading: false,
+            });
+        } catch (e) {
+            this.setState({
+                error: "Can't find results information",
+                loading: false,
+            });
+        }
+    }
+
       render() {
           const {
-            chart, date_condition, 
-            genesis_term, previous_term, later_term, termCheck, condition, result, loading} = this.state;
+            chart, food_id,
+            previous_term, later_term,  visible, error,
+            first_condition,second_condition,third_condition, search_condition, all_data_result, source, third_data_result,
+            prod_search_result,prod_value_result,  loading,  reviewed} = this.state;
         return (
             // <>
             //     이걸로 감싸고
             //     chart component들을 만든 다음에 DataPresenter 밑에 같이 랜더해보기
             // </>
             <>
-                <DataPresenter 
+                <MediaControlCard 
                     chart = {chart}
-                    genesis_term = {genesis_term}
+                    food_id = {food_id}
                     previous_term = {previous_term} 
                     later_term = {later_term} 
-                    termCheck = {termCheck} 
-                    condition = {condition}
-                    date_condition={date_condition}
-                    result= {result}
+                    first_condition = {first_condition}
+                    second_condition = {second_condition}
+                    third_condition = {third_condition}
+                    prod_search_result= {prod_search_result}
+                    prod_value_result= {prod_value_result}
+                    search_condition= {search_condition}
+                    // data
+                    all_data_result= {all_data_result}
+                    third_data_result= {third_data_result}
+                    source= {source}
                     loading = {loading}
-                    handleControlButton = {this.handleControlButton}
-                    handleTerm = {this.handleTerm}
+                    reviewed = {reviewed}
+                    visible = {visible}
+                    error = {error}
                     handleSearch = {this.handleSearch}
                     handleCondition = {this.handleCondition}
+                    handleDateChange = {this.handleDateChange}
+                    refreshCondition = {this.refreshCondition}
                 />
-                { condition==='gender' && (
-                    <XYChart />
-                )}
-                { condition==='region' && (
-                    <RegionTable />
-                )}
-                { condition==='country' && (
-                    <SimpleColumn />
-                )}
-                { condition==='age' && (
-                    <Pictorial_Stacked />
-                )}
-                { condition==='review' && (
-                    <Pie_Chart_With_Legend />
-                )}
+                {/* 유저 정보 분석 */}
+                
             </>
-            // <DayPickerRangeController
-            //     startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-            //     endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-            //     onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-            //     focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-            //     onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
-            //     initialVisibleMonth={() => moment().add(2, "M")} // PropTypes.func or null,
-            // />
         );
       }
     }

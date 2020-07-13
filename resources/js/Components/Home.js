@@ -41,60 +41,46 @@ const SLink = styled(Link)`
     justify-content: center;
     text-decoration: none;
 `;
+const ImageContainer = styled.div`
+width:100%;
+height: 100vh;
+display:block;  
+`;
+const IfDiv = styled.div`
+    width:100%;
+    height: 100%;
+    background-image: url(${props => props.bgImage});
+    background-position: center center;
+    
+    opacity: 1;
+`;
 
 class Home extends React.Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            id: "",
-            nickname: "",
-            logged: false,
-            onLogin: this.onLogin,
-            onLogout: this.onLogout,
-        }
+    state = {
+        token: ""
     }
-
-    // 로그인
-    onLogin = (id, nickname) => {
+    componentDidMount(){
+        let token = window.sessionStorage.getItem('access_token');
         this.setState({
-            id,
-            nickname,
-            logged: true
+            token
         });
-
-        const provider = window.sessionStorage.getItem('provider');
-
     }
-    // 로그아웃
-    onLogout = () => {
-        this.setState({
-            logged: false
-        });
-        window.sessionStorage.clear();
-        this.props.history.push('/');
-    }
-
-    componentDidMount() {
-        const id = window.sessionStorage.getItem('id');
-        const nickname = window.sessionStorage.getItem('nickname');
-        if(id) {
-            this.onLogin(id, nickname);
-        } else {
-            this.onLogout();
-        }
-        console.log(id);
-    }
-    
     render(){
-        const { id, nickname, logged, onLogout } = this.state;
+        const { token } = this.state;
+        console.log('Home render');
+        console.log(token);
         return(
             <>
-                <Header logged={logged} onLogout={onLogout} />
-                <div>id: {id}, nickname: {nickname}</div>
+                {/* <Header logged={logged} onLogout={onLogout} /> */}
+                <ImageContainer>
+                    <IfDiv bgImage = {require(`../assets/home1.png`)}></IfDiv>
+                    <IfDiv bgImage = {require(`../assets/home2.png`)}></IfDiv>
+                    {/* <IfDiv bgImage = {require(`../assets/sample3.jpg`)}></IfDiv> */}
+                </ImageContainer>
             </>
         );
     }
 }
 
-export default withRouter(Home);
+export default Home;
 

@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import AuthWrapper from './AuthWrapper';
 import Login from './Login';
-import Register from './Register';
+import Register from './index';
+import Store from '../Store/store';
+
 class Auth extends Component {
     // 페이지에 진입 할 때 헤더를 비활성화
     // componentWillMount() {
@@ -16,10 +18,14 @@ class Auth extends Component {
 
     render() {
         return (
-            <AuthWrapper>
-                <Route path="/login" component={Login}/>
-                <Route path="/regist" component={Register}/>
-            </AuthWrapper>
+            <Store.Consumer>
+                {store => 
+                    <AuthWrapper>
+                        <Route path="/login" component={Login} login={store.onLogin}/>
+                        <Route path="/regist" component={Register}/>
+                    </AuthWrapper>
+                }
+            </Store.Consumer>
         );
     }
 }

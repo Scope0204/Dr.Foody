@@ -17,25 +17,25 @@ class Pictorial_Stacked extends Component {
 
     chart.data = [{
         "name": "The first",
-        "value": 354
+        "value": 1
     }, {
         "name": "The second",
-        "value": 245
+        "value": 1
     }, {
         "name": "The third",
-        "value": 187
+        "value": 1
     }, {
         "name": "The fourth",
-        "value": 123
+        "value": 1
     }, {
         "name": "The fifth",
-        "value": 87
+        "value": 1
     }, {
         "name": "The sixth",
-        "value": 45
+        "value": 1
     }, {
         "name": "The seventh",
-        "value": 23
+        "value": 1
     }];
 
     let series = chart.series.push(new am4charts.PictorialStackedSeries());
@@ -63,7 +63,7 @@ class Pictorial_Stacked extends Component {
   render() {
     return (
       <>
-        <label>Redial</label>
+        <label>Pictorial_Stacked</label>
         <div id="Pictorial_Stacked" style={{ width: "50%", height: "500px" }}></div>
       </>
     );

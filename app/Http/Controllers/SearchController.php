@@ -25,7 +25,7 @@ class SearchController extends Controller
             'result'=> $result
         ], 200);
     }
-
+/*
     public function product(Request $request){
         $search = $request->get('id');
         $result = ['food_name'=>$search, 'food_photo'=>null, 'food_rating'=>10, 'material'=>'material'];
@@ -40,22 +40,25 @@ class SearchController extends Controller
         // return response()->json($search);
         // return response()->json('드래곤');
     }
-
+*/
     public function material($food_id,$user_id){
-        $date = date("Ymd");
+        $date = date("Y-m-d H:i:s");
         $user = \App\User::where("user_id","=",$user_id)->first();
         $birth_time = strtotime($user->user_birth);
         $birthday = date('Ymd' , $birth_time);
-        $age = floor(($date - $birthday) / 10000);
-        DB::table('searches')->insert(
-            [
-                'food_id'=>$food_id,
-                'search_date'=>$date,
-                'location_code'=>46,
-                'search_sex'=>$user->user_sex,
-                'search_age'=>$age
-            ]
-        );
+        $age = floor((date('Ymd') - $birthday) / 10000);
+        if(isset($user_id)){
+            DB::table('searches')->insert(
+                [
+                    'food_id'=>$food_id,
+                    'search_date'=>$date,
+                    'location_code'=>46,
+                    'search_sex'=>$user->user_sex,
+                    'search_age'=>$age,
+                    'user_id'=>$user_id
+                ]
+            );
+        }
 
         $material = \App\FoodMaterial::select(DB::raw('material_name, if( materials.keyword_id IN (SELECT keyword_id FROM avoid_materials WHERE user_id = '.$user_id.'), 1, 0) as type'))
         ->leftJoin('materials','food_materials.material_code','=','materials.material_code')
@@ -65,13 +68,26 @@ class SearchController extends Controller
         return $material;
     }
 
-    public function searchFood($searchText){
-        $foodList = \App\Food::select(DB::raw('foods.food_id, company_codes.company_name , food_name, food_photo, truncate(avg(review_point),1) as point, count(reviews.food_id) as review_count'))
-        ->leftJoin('reviews','reviews.food_id','=','foods.food_id')
+    public function searchFood($searchText, $user_id = false){
+        $user_id = \App\User::select('user_id')->where('id', $user_id)->first()->user_id;
+        $selldata = \App\Selldata::select(DB::raw('orders.order_id as order_id, food_id'))
+        ->leftJoin('orders','orders.order_id','=','selldatas.order_id')
+        ->where('orders.user_id',$user_id);
+
+        $reviewdata = \App\Review::select(DB::raw('food_id, truncate(avg(review_point),1) as point, count(reviews.food_id) as review_count'))
+        ->groupBy('food_id');
+
+        $foodList = \App\Food::select(DB::raw('foods.food_id, ifnull(selldata.order_id, 0) as bought, reviewdata.point, reviewdata.review_count, company_codes.company_name , food_name, food_photo'))
         ->leftJoin('company_codes','foods.company_id','=','company_codes.company_id')
+        ->leftJoinSub($selldata, 'selldata', function ($join) {
+            $join->on('foods.food_id', '=', 'selldata.food_id');
+        })
+        ->leftJoinSub($reviewdata, 'reviewdata', function ($join) {
+            $join->on('foods.food_id', '=', 'reviewdata.food_id');
+        })
         ->where('food_name','like','%'.$searchText.'%')
-        ->groupBy('foods.food_id')
         ->get();
+
         
         
         foreach($foodList as $key => $food){
@@ -88,11 +104,39 @@ class SearchController extends Controller
             ->orderBy('country_count','desc')
             ->value('country_name_kr');
             $foodList[$key]->search_count = $food->search()->count();
-            $foodList[$key]->company = $food->company;
             $foodList[$key]->country = $country;
             $foodList[$key]->sex = $sex;
         }
         return $foodList;
+    }
+
+    public function detailFood2($food_id){
+        $reviewdata = \App\Review::select(DB::raw('food_id, truncate(avg(review_point),1) as point, count(reviews.food_id) as review_count'))
+        ->groupBy('food_id');
+
+        $food = \App\Food::select(DB::raw('foods.food_id, reviewdata.point, reviewdata.review_count, company_codes.company_name , food_name, food_photo'))
+        ->leftJoin('company_codes','foods.company_id','=','company_codes.company_id')
+        ->leftJoinSub($reviewdata, 'reviewdata', function ($join) {
+            $join->on('foods.food_id', '=', 'reviewdata.food_id');
+        })
+        ->where('foods.food_id',$food_id)
+        ->first();
+        $sex = $food->search()->avg('search_sex');
+        if($sex){
+            $sex = ($sex == 0.5) ? "동일" : (round($sex) == 0) ? "여자" : "남자" ;
+        }
+        $country = \App\Search::select(DB::raw('count(search_id) as country_count,country_codes.country_code, country_codes.country_name_kr'))
+        ->leftJoin('locations','locations.location_code','=','searches.location_code')
+        ->leftJoin('city_codes','city_codes.city_code','=','locations.city_code')
+        ->leftJoin('country_codes','country_codes.country_code','=','city_codes.country_code')
+        ->where('food_id',$food->food_id)
+        ->groupBy('country_codes.country_code')
+        ->orderBy('country_count','desc')
+        ->value('country_name_kr');
+        $food->search_count = $food->search()->count();
+        $food->country = $country;
+        $food->sex = $sex;
+        return $food;
     }
 
     public function detailFood($food_id,$user_id = 0){
@@ -148,12 +192,12 @@ class SearchController extends Controller
             return "No Results Found.";
         }
     }
-
+    
     public function wordCloud($food_id){
-        $texts = DB::table('food_words')->select('food_word')->where('food_id',$food_id)->orderBy('word_id','desc')->limit(100)->get();
+        $texts = DB::table('food_words')->select('food_text')->where('food_id',$food_id)->orderBy('word_id','desc')->limit(100)->get();
         $cloudText = '';
         foreach($texts as $text){
-            $cloudText .= $text->food_word;
+            $cloudText .= $text->food_text;
         }
         return $cloudText;
     }

@@ -9,56 +9,39 @@ am4core.useTheme(am4themes_animated);
 // Themes end
 
 class SimpleColumn extends React.Component{
+    state = {
+      value: this.props.prod_value_result,
+    }
     componentDidMount(){
 
         let chart = am4core.create("chartdiv", am4charts.XYChart);
         
         // Add data
-        chart.data = [{
-          "country": "USA",
-          "visits": 2025
-        }, {
-          "country": "China",
-          "visits": 1882
-        }, {
-          "country": "Japan",
-          "visits": 1809
-        }, {
-          "country": "Germany",
-          "visits": 1322
-        }, {
-          "country": "UK",
-          "visits": 1122
-        }, {
-          "country": "France",
-          "visits": 1114
-        }, {
-          "country": "India",
-          "visits": 984
-        }, {
-          "country": "Spain",
-          "visits": 711
-        }, {
-          "country": "Netherlands",
-          "visits": 665
-        }, {
-          "country": "Russia",
-          "visits": 580
-        }, {
-          "country": "South Korea",
-          "visits": 443
-        }, {
-          "country": "Canada",
-          "visits": 441
-        }, {
-          "country": "Brazil",
-          "visits": 395
-        }];
-        
+        chart.data = this.state.value.slice(0, 7);
+        // [{
+        //   "country": "USA",
+        //   "visits": 2025
+        // }, {
+        //   "country": "China",
+        //   "visits": 1882
+        // }, {
+        //   "country": "Japan",
+        //   "visits": 1809
+        // }, {
+        //   "country": "Germany",
+        //   "visits": 1322
+        // }, {
+        //   "country": "UK",
+        //   "visits": 1122
+        // }, {
+        //   "country": "France",
+        //   "visits": 1114
+        // }];
+        // 나라, 수치 다 보내고 상위 몇개만 그래프로 나머지는 text
         // Create axes
         
         let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-        categoryAxis.dataFields.category = "country";
+        categoryAxis.dataFields.category = "country_name";
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.minGridDistance = 30;
         
@@ -73,9 +56,9 @@ class SimpleColumn extends React.Component{
         
         // Create series
         let series = chart.series.push(new am4charts.ColumnSeries());
-        series.dataFields.valueY = "visits";
-        series.dataFields.categoryX = "country";
-        series.name = "Visits";
+        series.dataFields.valueY = "count";
+        series.dataFields.categoryX = "country_name";
+        series.name = "Count";
         series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
         series.columns.template.fillOpacity = .8;
         

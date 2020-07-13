@@ -12,10 +12,10 @@ class SearchSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 1; $i <= 500; $i++){
-            $start_date = '2015-12-01';
+        for($i = 1; $i <= 5000; $i++){
+            $start_date = '2020-01-01';
 
-            $end_date = '2020-5-19';
+            $end_date = '2020-06-08';
         
             $min = strtotime($start_date);
         
@@ -28,8 +28,8 @@ class SearchSeeder extends Seeder
             $val = rand($min, $max);
             $date = date('Y-m-d H:i:s', $val);
             \App\Search::insert([
-                'food_id' => rand(1, 5),
-                'location_code' => rand(251,494),
+                'food_id' => 1,
+                'location_code' => rand(1,494),
                 'search_sex' => rand(0,1),
                 'search_date' => $date,
                 'search_age' => rand(10,97)

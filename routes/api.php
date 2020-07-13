@@ -13,11 +13,18 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('/app/pagetest', 'AppController@pageTest');
+Route::get('/chartDown/{food_id}/{source}/{sdate}/{edate}', 'ChartController@chartDown');
+Route::get('/dateChart/{food_id}/{source}/{sdate?}/{edate?}', 'ChartController@dateChart');
+Route::get('/timeChart/{food_id}/{sdate?}/{edate?}', 'ChartController@timeChart');
+//Route::get('/raderChart/{food_id}/{source}/{sdate?}/{edate?}', 'ChartController@raderChart');
+Route::get('/countryChart/{food_id}/{source}/{sdate?}/{edate?}', 'ChartController@countryChart'); 
+Route::get('/pieChart/{food_id}/{source}/{type}/{sdate?}/{edate?}', 'ChartController@pieChart');
+Route::get('/app/qration/{user_id}', 'AppController@qration');
 Route::get('/app/dbtest', 'AppController@dbtest'); // 테스트용
 Route::post('/app/login', 'AppController@login'); // 로그인
 Route::get('/app/foodList', 'AppController@foodList'); // 음식 리스트
-Route::get('/app/reviewList', 'AppController@reviewList'); 
+Route::post('/app/reviewList', 'AppController@reviewList'); 
 Route::post('/app/userList', 'AppController@userList');
 Route::post('/app/searchFood', 'AppController@searchFood');
 Route::post('/app/regist', 'AppController@regist');
@@ -32,9 +39,12 @@ Route::post('/app/reviewWrite', 'AppController@reviewWrite');
 Route::post('/app/dibsList', 'AppController@dibsList');
 Route::post('/app/searchList', 'AppController@searchList');
 Route::post('/app/searchHistory', 'AppController@searchHistory');
+Route::post('/app/rankList', 'AppController@rankList');
 
+Route::post('/chartMake', 'ChartController@chartMake');
 
 // 회원가입
+
 Route::get('regist', 'RegistController@index');
 Route::post('regist', 'RegistController@store');
 Route::get('registData', 'RegistController@registData');
@@ -61,13 +71,27 @@ Route::group(['middleware' => 'auth:api'], function(){
 Route::get('searchList/{search_id?}', 'SearchController@search');
 
 // 제품 상세 보기
-Route::get('searchProduct/{id}', 'SearchController@product');
+//Route::get('searchProduct/{id}', 'SearchController@product');
 
-Route::get('searchFood/{searchText}', 'SearchController@searchFood');
+Route::get('searchFood/{searchText}/{user_id?}', 'SearchController@searchFood');
 
 Route::get('detailFood/{food_id}/{user_id?}', 'SearchController@detailFood');
+
+Route::get('detailFood2/{food_id}', 'SearchController@detailFood2');
 
 Route::get('wordCloud/{food_id}', 'SearchController@wordCloud');
 
 Route::get('material/{food_id}/{user_id}', 'SearchController@material');
 Route::get('countryData/{food_id}', 'SearchController@countryData');
+
+//
+Route::post('pocket', 'SelldataController@pocket');
+Route::post('deletePoket', 'SelldataController@deletePoket'); // poket list 삭제
+
+Route::post('pocketList', 'SelldataController@pocketList');
+
+Route::get('dateChart/{food_id?}/{year?}/{month?}', 'SelldataController@dateChart');
+
+Route::get('selldataList/{user_id}', 'SelldataController@selldataList');
+
+Route::post('selldata', 'SelldataController@selldata');
