@@ -99,7 +99,7 @@ const Divider = styled.span`
 // search_count ={c.search_count} country ={c.country}
 // sex ={c.sex}
 // food_id로 고치기
-const Product = ({food_id,company_name, food_name, food_photo, point, review_count, search_count,country, sex, handleDelete}) => (
+const Product = ({food_id,company_name, food_name, food_photo, point, review_count, search_count,country, sex, handleDelete, foodJp}) => (
         <ContainerButton>
             <Container>
                 <Image bgUrl={
@@ -108,19 +108,21 @@ const Product = ({food_id,company_name, food_name, food_photo, point, review_cou
                         : require("../../assets/no_image.png") }
                 />
                 <InformationContainer>
-                    <Title>{`제품명: ${food_name}`}</Title>
-                    <Inform>{`제조사: ${company_name}`}</Inform>
+                    <Title>{`食品名: ${foodJp}`}</Title>
+                    <Inform>{`製造会社: ${company_name}`}</Inform>
                     <Divider>/</Divider>
-                    <Inform>{`총 리뷰 수: ${review_count}`}</Inform>
+                    <Inform>{`全体レビューの数: ${review_count}`}</Inform>
                     <Divider>/</Divider>
-                    <Inform>{`총 조회 수: ${search_count}`}</Inform>
+                    <Inform>{`全体検索の数: ${search_count}`}</Inform>
                     <Divider>/</Divider>
-                    <Inform>{`선호국가: ${country}`}</Inform>
+                    {/* <Inform>{`人気国家: ${country}`}</Inform> */}
+                    <Inform>{`人気国家: 日本`}</Inform>
                     <Divider>/</Divider>
-                    <Inform>{`선호성별: ${sex}`}</Inform>
+                    {/* <Inform>{`人気性別: ${sex}`}</Inform> */}
+                    <Inform>{`人気性別: 男性`}</Inform>
                 </InformationContainer>
                 <ButtonContainer>
-                    <Button onClick={handleDelete} value={food_id}>삭제하기</Button>
+                    <Button onClick={handleDelete} value={food_id}>削除する</Button>
                 </ButtonContainer>
             </Container>
         </ContainerButton>

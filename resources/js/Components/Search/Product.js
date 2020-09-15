@@ -18,8 +18,6 @@ const Container = styled.div `
     0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048),
     3px 3px 3px;
-
-;
   background: white;
 `;
 
@@ -112,7 +110,7 @@ const Product = ({food_code, food_name, food_photo, point, company_name}) => (
                     : require("./no_image.png") }
             />
             <InformationContainer>
-                <Name>품명: </Name>
+                <Name>食品名: </Name>
                 <Title>{food_name}</Title>
                 <Year>{company_name}</Year>
                 <Rating>

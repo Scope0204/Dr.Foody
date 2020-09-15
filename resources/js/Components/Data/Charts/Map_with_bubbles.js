@@ -4,6 +4,20 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import styled from 'styled-components';
+
+const TitleDiv = styled.div`
+padding-top: 5px;
+padding-bottom: 5px;
+margin-bottom: 50px;
+text-align: center;
+background: #dddddd;
+font-weight: 600;
+color: black;
+font-size: 20px;
+
+width: 95%;
+`;
 
 am4core.useTheme(am4themes_animated);
 // am4core.useTheme(am4themes_material);
@@ -100,7 +114,10 @@ imageTemplate.adapter.add("longitude", function(longitude, target) {
   render() {
     return (
       <>
-        <label>지역별 총 조회수를 볼 수 있습니다.</label>
+      <TitleDiv>
+        <label>地域別の検索数です。</label>
+        {/* <label>지역별 총 조회수를 볼 수 있습니다.</label> */}
+      </TitleDiv>
         <div id="Map_with_bubbles" style={{ width: "100%", height: "500px" }}></div>
       </>
     );

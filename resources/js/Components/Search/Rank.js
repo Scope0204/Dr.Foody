@@ -7,8 +7,8 @@ const RankContainer = styled.div`
     width: 30%;
     height: 100%;
     display: flex;
-    padding-top: 300px;
-    margin-left:34.7%;
+    padding-top: 70px;
+    transform: translate(117%);
 `;
 const RankCardSt = styled.div`
     width: 30%;
@@ -57,8 +57,8 @@ const RankItem = styled.li`
 
 const items = [
     {   
-        category: '인기 검색 제품',
-        prod: ['신라면', '불닭볶음면', '자가비', '홍초', '마켓오']
+        category: '人気食品',
+        prod: ['辛ラーメン', 'ブルダック炒め麵', 'ジャガー', 'ホンチョザクロ', 'マーケットオーリアルブラウニー']
     }
 ];
 class RankCard extends Component {

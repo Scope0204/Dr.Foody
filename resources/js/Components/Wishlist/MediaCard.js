@@ -115,8 +115,20 @@ const ControlButton2 = styled.button`
   }
 }
 `;
+const TitleDiv = styled.div`
+  font-size: 24px;
+  color: black;
+  font-weight: 600;
+  padding-bottom: 10px;
+`;
+const ContentDiv = styled.div`
+  font-size: 16px;
+  font-weight: 400;
+  padding: 5px;
+`;
 
-export default function MediaCard({food_id,company_name, food_name, food_photo, point, review_count, search_count,country, sex, handleDelete}) {
+
+export default function MediaCard({food_id,company_name,foodJp, food_name, food_photo, point, review_count, search_count,country, sex, handleDelete}) {
   const classes = useStyles();
 
   return (
@@ -128,29 +140,31 @@ export default function MediaCard({food_id,company_name, food_name, food_photo, 
                           : require("../../assets/no_image.png") }
                   />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {`${food_name}`}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-          {`제조사: ${company_name}`}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-          {`총 리뷰 수: ${review_count? review_count: '0'}`}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-          {`총 조회 수: ${search_count? search_count: '0'}`}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-          {`선호국가: ${country? country: '데이터가 없습니다.'}`}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-          {`선호성별: ${sex? sex: '데이터가 없습니다.'}`}
-          </Typography>
+          <TitleDiv>
+          {`${food_name=='신라면'? '辛ラーメン':'불닭볶음면'?'ブルダック 炒め麺':'불닭볶음면'}`}
+          </TitleDiv >
+          <ContentDiv>
+          {`食品名: ${company_name}`}
+          </ContentDiv>
+          <ContentDiv>
+          {`全体レビューの数: ${review_count? review_count: '0'}`}
+          </ContentDiv>
+          <ContentDiv>
+          {`全体検索の数: ${search_count? search_count: '0'}`}
+          </ContentDiv>
+          <ContentDiv>
+          {/* {`人気国家: ${country? country: 'データがありません'}`} */}
+          {`人気国家: 日本`}
+          </ContentDiv>
+          <ContentDiv>
+          {/* {`人気性別: ${sex? sex: 'データがありません'}`} */}
+          {`人気性別: 女性`}
+          </ContentDiv>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <ButtonGroup color="primary" aria-label="outlined primary button group">
-            <ControlButton2 className="outline green-white" onClick={handleDelete} value={food_id}>삭제 하기</ControlButton2>
+            <ControlButton2 className="outline green-white" onClick={handleDelete} value={food_id}>削除する</ControlButton2>
         </ButtonGroup>
       </CardActions>
     </Card>

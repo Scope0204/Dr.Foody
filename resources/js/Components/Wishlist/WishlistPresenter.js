@@ -117,6 +117,8 @@ const ControlButton2 = styled.button`
 `;
 const Div = styled.div`
 padding-bottom: 10px;
+font-size: 16px;
+color: black;
 `;
 // "food_id": 1,
 //         "company_name": "(주)농심",
@@ -129,11 +131,11 @@ padding-bottom: 10px;
 //         "country": "대한민국",
 //         "sex": "남자"
  
-const WishlistPresenter = ({wishList , handleCancel, handlePayment, handleDelete, total_price, user_id, type, order_id,  error}) =>(
+const WishlistPresenter = ({wishList , handleCancel, handlePayment, handleDelete, total_price, user_id, type, order_id, foodJp, error}) =>(
     <Container>
         <ImageContainer>
             <CartImage bgUrl = {require('../../assets/cart.png')} />
-            <Text>데이터 구매 장바구니</Text>
+            <Text>お気に入りデータ</Text>
         </ImageContainer>
         <Border />
         {wishList && wishList.length > 0? 
@@ -152,6 +154,7 @@ const WishlistPresenter = ({wishList , handleCancel, handlePayment, handleDelete
                             search_count = {w.search_count}
                             country = {w.country}
                             sex = {w.sex}
+                            foodJp = {foodJp}
                         />
                     ))}
                 </ProductList>
@@ -163,14 +166,14 @@ const WishlistPresenter = ({wishList , handleCancel, handlePayment, handleDelete
     {/* 결제 화면 */}
     <Border />
     <ResultContainer>
-            <Div>주문자: {user_id}</Div>
-            <Div>주문번호: {order_id}</Div>
-            <Div>결제 방식: {type}</Div>
-            <Div>총 결제 금액: {total_price}</Div>
+            <Div>注文者: {user_id}</Div>
+            <Div>注文番号: {order_id}</Div>
+            <Div>決済方法: {type}</Div>
+            <Div>決済金額: {total_price}</Div>
     </ResultContainer>
     <ButtonGroup color="primary" aria-label="outlined primary button group">
-        <ControlButton2 className="outline green-white" onClick={handlePayment}>결제하기</ControlButton2>
-        <ControlButton2 className="outline green-white" onClick={handleCancel}>취소하기</ControlButton2>
+        <ControlButton2 className="outline green-white" onClick={handlePayment}>決済する</ControlButton2>
+        <ControlButton2 className="outline green-white" onClick={handleCancel}>キャンセル</ControlButton2>
     </ButtonGroup>
         {/* <ProductList>
             wishList.map(product)

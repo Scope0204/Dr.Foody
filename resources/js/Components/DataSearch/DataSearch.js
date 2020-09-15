@@ -95,12 +95,6 @@ export default class extends Component {
             alert(' 구매 후 조회 가능합니다.');
         }
     };
-
-    // addWishList = (user_id, value) => {
-    //     const res = Api.addWishListApi(user_id, value);
-    //     return res;
-    // };
-
     // 로그인 확인하고 구입한 목록 불러오기
     checkLogin = () => {
         const { user_id } = this.state;
@@ -117,15 +111,15 @@ export default class extends Component {
 
     onConfirm = async(e) => {
         e.preventDefault();
-        const buy = '구매';
-        const wish = '장바구니에 담겠';
+        const buy = '購入しますか。';
+        const wish = 'お気に入りしますか。';
         let confirm = false;
 
         const { target: {name, value}} = e;
         console.log(value);
         const { user_id } = this.state;
         if(name==='buy'){
-             confirm = window.confirm(`${buy}하시겠습니까`);
+             confirm = window.confirm(`${buy}`);
         } 
         // // 장바구니 ok일 경우
         if(name==='wish'){
@@ -134,9 +128,9 @@ export default class extends Component {
             const {data: apiResult} = await Api.addWishListApi(user_id, value);
             console.log(apiResult);
             if(apiResult.got === true) {
-                alert('이미 있는 제품입니다.');
+                alert('もう追加されいます。');
             } else {
-                alert('추가하였습니다.');
+                alert('追加しました。');
             }
             // 구매 ok일 경우
         } else if(confirm && name==='buy'){
@@ -147,13 +141,6 @@ export default class extends Component {
             this.props.history.push('/wishlist');
         }
     };
-
-    // componentDidMount(){
-    //     this.checkLogin();
-
-    // }
-
-    
 
     render(){
         const {searchTerm, pastTerm, result, loading, error, logined } = this.state;

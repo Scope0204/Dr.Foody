@@ -11,6 +11,7 @@ export default class extends React.Component{
             user_id: window.sessionStorage.getItem('id'),
             bought_list: null,
             error: '',
+            foodJp: null,
             
         }
     }
@@ -18,10 +19,17 @@ export default class extends React.Component{
         // 구매 내역 확인하는 api
         const {user_id} = this.state;
         console.log('구매목록 어싱크');
+        let foodJp = null;
         try {
             const {data: bought_list} = await Api.myDataApi(user_id);
+            if(bought_list.food_name==='신라면'){
+                foodJp = '辛ラーメン';
+            } else if(bought_list.food_name==='불닭볶음면'){
+                foodJp = 'ブルダック 炒め麺';
+            }
             this.setState({
-                bought_list
+                bought_list,
+                foodJp
             });
             console.log(bought_list);
         } catch {
@@ -31,12 +39,13 @@ export default class extends React.Component{
         }
     }
     render() {
-        const {bought_list} = this.state;
+        const {bought_list,foodJp} = this.state;
         console.log('구매목록 랜더');
         console.log('bought_list: ', bought_list);
         return(
                 <DataListPresenter 
-                bought_list = {bought_list}
+                    bought_list = {bought_list}
+                    foodJp = {foodJp}
                 />
             );
     }

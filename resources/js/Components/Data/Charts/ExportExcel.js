@@ -6,7 +6,6 @@ import { DownloadOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    float: right;
     display: inline;
 `;
 

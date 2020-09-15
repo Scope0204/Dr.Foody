@@ -6,12 +6,13 @@ import styled from 'styled-components';
 import Rating from '@material-ui/lab/Rating';
 import {Radar} from 'react-chartjs-2';
 import { Table } from 'antd';
+// import { transform } from 'lodash';
+// import { nodeName } from 'jquery';
 
 const ChartDiv = styled.div`
-padding-top: 40px;
-padding-bottom: 40px;
-  left: 50%;
-  transform: translate(25%);
+  width: 95%;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px #dddddd;
 `;
 const PointDiv = styled.div`
 padding-bottom: 25px;
@@ -24,20 +25,23 @@ const PointSpan = styled.span`
 // left: 50%;
 //   transform: translate(25%);
 const InformDiv = styled.div`
-  width: 80%;
+  width: 100%;
   display: grid;
-  grid-template-columns : 50% 35%;
-  
-left: 50%;
-transform: translate(15%);
-`;
+  grid-template-columns : 29% 29% 36%;
+  `;
+  // border: 1px solid black;
 const TextDiv = styled.div`
-left: 50%;
-transform: translate(40%);
-padding-top: 10px;
+padding-top: 5px;
+padding-bottom: 5px;
+margin-bottom: 50px;
+text-align: center;
+background: #dddddd;
+font-weight: 600;
+color: black;
+width: 95%;
 `;
 const RadarDiv = styled.div`
-  width: 100%;
+  width: 50%;
 `;
 const TablesDiv = styled.div`
   width: 100%;
@@ -69,6 +73,7 @@ am4core.useTheme(am4themes_animated);
 class Pie_Chart_With_Legend_review extends Component {
   constructor(props){
     super(props);
+    this.chartReference = React.createRef();
     this.state = {
         third_data_result: this.props.third_data_result,
         source:  this.props.source, // false = 0리뷰, true = 1조회
@@ -79,13 +84,14 @@ class Pie_Chart_With_Legend_review extends Component {
         man_count: 0,
         woman_count: 0,
         count: 0,
+        chartRef: null,
         radar_data : null,
-
+        // downloadChart: this.downloadChart,
         men_columns :[
           {
               title: '맛',
               dataIndex: 'name',
-              width: 20,
+              width: 30,
           },
           {
               title: '리뷰 수',
@@ -96,7 +102,7 @@ class Pie_Chart_With_Legend_review extends Component {
           {
               title: '맛',
               dataIndex: 'name',
-              width: 20,
+              width: 30,
           },
           {
               title: '리뷰 수',
@@ -107,15 +113,19 @@ class Pie_Chart_With_Legend_review extends Component {
         women_table_data: null,
     }
 }
+
   componentDidMount() {
-      this.setState({
-        loading: true
+    this.setState({
+      loading: true,
       });
       const {third_data_result, source} = this.state;
       console.log('파이차티 third_data_result: ', third_data_result);
       // Create chart instance
       let chart = am4core.create("Pie_Chart_With_Legend_review", am4charts.PieChart);
       
+      // 여백, 마진 
+      chart.autoMargins = false;
+
       // Add and configure Series
       let pieSeries = chart.series.push(new am4charts.PieSeries());
       pieSeries.dataFields.value = "litres";
@@ -165,23 +175,23 @@ class Pie_Chart_With_Legend_review extends Component {
 // radar chart
 let men_columns= [
   {
-      title: '맛',
+      title: '味',
       dataIndex: 'name',
-      width: 20,
+      width: 25,
   },
   {
-      title: '리뷰 수',
+      title: 'レビューの数',
       dataIndex: 'i1',
       width: 20,
   }]; 
   let women_columns= [
     {
-        title: '맛',
+        title: '味',
         dataIndex: 'name',
-        width: 20,
+        width: 25,
     },
     {
-        title: '리뷰 수',
+        title: 'レビューの数',
         dataIndex: 'i1',
         width: 20,
     }]; 
@@ -192,27 +202,48 @@ let women_table_data = [];
 console.log('third_data_result.favorite_data.length');
 console.log(third_data_result.favorite_data.length);
 for(let i=0; i < third_data_result.favorite_data.length; i++) {
+  let flavor = '';
+  switch(third_data_result.favorite_data[i].favorite){
+    // '甘味', '辛味','酸味','苦味',  '塩味'
+    case '단 맛':
+      flavor = '甘味';
+      break;
+    case '쓴 맛':
+      flavor = '苦味';
+      break;
+    case '매운 맛':
+      flavor = '辛味';
+      break;
+    case '신 맛':
+      flavor = '酸味';
+      break;
+    case '짠 맛':
+      flavor = '塩味';
+      break;
+  }
   if(third_data_result.favorite_data[i].user_sex === 1){
     women_table_data.push({
       key: i,
-      name: third_data_result.favorite_data[i].favorite,
+      name: flavor,
+      // name: third_data_result.favorite_data[i].favorite,
       i1: third_data_result.favorite_data[i].favorite_count!==0? third_data_result.favorite_data[i].favorite_count : "0"
     });
     women_data.push(third_data_result.favorite_data[i].favorite_count);
   } else if (third_data_result.favorite_data[i].user_sex === 0){
     men_table_data.push({
       key: i,
-      name: third_data_result.favorite_data[i].favorite,
+      // name: third_data_result.favorite_data[i].favorite,
+      name: flavor,
       i1: third_data_result.favorite_data[i].favorite_count!==0? third_data_result.favorite_data[i].favorite_count : "0"
     });
     men_data.push(third_data_result.favorite_data[i].favorite_count);
   }
 }
 let radar_data = {
-  labels: [ '단맛', '매운맛','신맛','쓴맛',  '짠맛'],
+  labels: [ '甘味', '辛味','酸味','苦味',  '塩味'],
   datasets: [
     {
-      label: '남성 리뷰 수',
+      label: '男性のレビュー数',
       backgroundColor: 'rgba(146, 168, 209, 0.2)',
       borderColor: '#92A8D1',
       pointBackgroundColor: '#92A8D1',
@@ -222,7 +253,7 @@ let radar_data = {
       data: men_data
     },
     {
-      label: '여성 리뷰 수',
+      label: '女性のレビュー数',
       backgroundColor: 'rgba(247, 202, 201, 0.2)',
       borderColor: '#F7CAC9',
       pointBackgroundColor: '#F7CAC9',
@@ -236,12 +267,13 @@ let radar_data = {
 
       // 리뷰 차트
       let  data = [{
-          "country" : third_data_result.data[0].country,
+          "country" : "男性",
           "litres" : third_data_result.data[0].review_count,
           "color": am4core.color("#92A8D1"),
         },
         {
-          "country" : third_data_result.data[1].country,
+          // "country" : third_data_result.data[1].country,
+          "country" : "女性",
           "litres" : third_data_result.data[1].review_count,
           "color": am4core.color("#F7CAC9"),
         }];
@@ -266,9 +298,14 @@ let radar_data = {
       chart.exporting.menu = new am4core.ExportMenu();
       chart.exporting.menu.align = "left";
       chart.exporting.menu.verticalAlign = "top";
+      
 
-}
-
+    console.log('왜 안되....',this.chartReference);
+    this.setState({
+      chartRef: this.chartReference
+    });
+      
+    }
   componentWillUnmount() {
     if (this.chart) {
       this.chart.dispose();
@@ -352,35 +389,59 @@ let radar_data = {
 // }
   render() {
     const {man_point, woman_point, loading, man_count, woman_count, count ,radar_data, men_table_data, women_table_data, men_columns, women_columns, 
-    } = this.state;
+      chartRef} = this.state;
     return (
       
         <>
-              <ChartDiv style={{ fontSize: "20px", paddingTop: "30px" }}>성별 리뷰 정보입니다.</ChartDiv>
-              <InformDiv>
-                <RadarDiv>
-                  <Radar data={radar_data} style={{ fontSize: "20px", paddingLeft: "100px" }} />
-                </RadarDiv>
+              <TextDiv style={{ textAlign:"center", fontSize: "20px" }}>性別レビューの情報です。</TextDiv>
+              <InformDiv> 
+                <ChartDiv>
+                  {radar_data && (
+                    <Radar data={radar_data} 
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      layout: {
+                        padding: {
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0
+                        }
+                      }, 
+                      legend: {
+                        position:"bottom",
+                      },
+                    }} 
+                      ref={this.chartReference}
+                    />
+                  )}
+                  {/* {chartRef && (
+                    // <button onClick={chartRef.toBase64Image()} >다운</button>
+
+                  )} */}
+                </ChartDiv>
+                <ChartDiv>
+                  <div id="Pie_Chart_With_Legend_review" style={{ width: "100%", height: "100%", margin:"0", padding:"0"}}></div>
+                </ChartDiv>
                 <TablesDiv>
                   <ManTableDiv>
                     <PointDiv>
-                      <PointSpan>평균 별점({man_point})</PointSpan>
+                      <PointSpan>平均評価点数({man_point})</PointSpan>
                       <Rating name="read-only" precision={0.5} value={man_point} readOnly />
                     </PointDiv>
-                    <Table columns={men_columns} dataSource={men_table_data} pagination={0}/>
+                    <Table columns={men_columns} dataSource={men_table_data} pagination={false} />
                   </ManTableDiv>
                   <WomanTableDiv>                    
                     <PointDiv>
-                      <PointSpan>평균 별점({woman_point})</PointSpan>
+                      <PointSpan>平均評価点数({woman_point})</PointSpan>
                       <Rating name="read-only" precision={0.5} value={woman_point} readOnly />  
                     </PointDiv>
-                    <Table columns={women_columns} dataSource={women_table_data}  />
+                    <Table columns={women_columns} dataSource={women_table_data}  pagination={false} />
                   </WomanTableDiv>
                 </TablesDiv>
               </InformDiv>
-          <ChartDiv>
-              <div id="Pie_Chart_With_Legend_review" style={{ width: "50%", height: "500px" }}></div>
-          </ChartDiv>
+          
         </>
     );
   }

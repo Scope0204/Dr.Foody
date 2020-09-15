@@ -18,8 +18,7 @@ class LoginController extends Controller
     public function index(Request $request)
     {
         // return view('app');
-        return response()->json('드래곤');
-
+        return response()->json('check');
     }
 
     public function login(Request $request) {
@@ -27,22 +26,18 @@ class LoginController extends Controller
             'id' => 'required|string|max:255',
             'password' => 'required|string|max:255',
         ]);
-    
         if($validator->fails()) {
             return response()->json([
                 'status' => 'error',
                 'messages' => $validator->messages()
             ], 200);
         }
-    
         if (! $token = Auth::guard('api')->attempt(['id' => $request->id, 'password' => $request->password])) {
         // if (! $token = auth('api')->attempt(['id' => $request->id, 'password' => $request->password])) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-    
         return $this->respondWithToken($token);
     }
-    
     protected function respondWithToken($token) {
         return response()->json([
             'access_token' => $token,
@@ -53,14 +48,11 @@ class LoginController extends Controller
     public function user() {
         return response()->json(Auth::guard('api')->user());
     }   
-
     public function refresh() {
         return $this->respondWithToken(Auth::guard('api')->refresh());
     }
-
     public function logout() {
         Auth::guard('api')->logout();
-    
         return response()->json([
             'status' => 'success',
             'message' => 'logout'

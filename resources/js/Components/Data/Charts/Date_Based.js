@@ -2,6 +2,29 @@ import React, { Component } from 'react';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import styled from 'styled-components';
+
+
+
+const TitleDiv = styled.div`
+padding-top: 5px;
+padding-bottom: 5px;
+margin-bottom: 50px;
+text-align: center;
+background: #dddddd;
+font-weight: 600;
+color: black;
+font-size: 20px;
+
+width: 95%;
+`;
+
+const TextDiv = styled.div`
+  font-size: 16px;
+  color: black;
+  padding-bottom: 30px;
+  font-weight: 400;
+`;
 
 am4core.useTheme(am4themes_animated);
 
@@ -99,10 +122,13 @@ class Date_Based extends Component {
 
   render() {
       const {count} = this.state;
+      console.log('나라 카윤트: ',count);
     return (
       <>
-        <label>기간별 추이를 확인할 수 있습니다.</label>
-        <div>총 {count}건의 결과가 있습니다.</div>
+        <TitleDiv>
+          <div>期間別の推移です。</div>
+        </TitleDiv>
+        <TextDiv>{parseInt(count)}件の結果があります。</TextDiv>
         <div id="Date_Based" style={{ width: "100%", height: "500px" }}></div>
       </>
     );

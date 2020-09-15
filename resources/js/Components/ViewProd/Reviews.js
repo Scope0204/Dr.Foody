@@ -6,18 +6,21 @@ import Rating from '@material-ui/lab/Rating';
 const { TextArea } = Input;
 
 const Container = styled.div`
-    width: 70%;
-    border: 1px solid black;
+    width: 100%;
     position: relative;
+    padding: 10px;
+    margin-top: 10px;
 `;
 const Content = styled.div`
-    width: 70%;
-    margin-left: 50px;
+    width: 100%;
+    margin-left: 100px;
 `;
 
 const Cover = styled.div`
-    width: 100px;
-    height: 100px;
+margin-top: -31px;
+margin-left: -7px;
+    width: 93px;
+    height: 104px;
     background-image: url(${props => props.bgImage});
     background-position: center center;
     background-size: cover;
@@ -40,9 +43,11 @@ const InformationContainer = styled.div`
 width: 100px;
 `;
 
-const Information = styled.span`
-    font-size: 15px;
-    margin-bottom: 20px;
+const Information = styled.div`
+    font-size: 18px;
+    position: absolute;
+    margin-left: 124px;
+    margin-top: -20px;
 `;
 
 const Overview = styled.div`
@@ -51,7 +56,7 @@ const Overview = styled.div`
     world-spacing: 5px;
     letter-spacing: 1px;
     line-height: 1.5;
-    width: 80%;
+    width: 100%;
 `;
 // 수정 버튼 눌렀을 때
 const ModefyContainer = styled.div`
@@ -98,17 +103,18 @@ const Reviews = ({ user_id, id, review_date, review_content, review_point, user_
             />
             <Content>
                 <Writer>{user_nickname}</Writer>
-                <Information>님이 리뷰를 작성하였습니다</Information>
-                <Rating name="read-only" value={review_point} readOnly />
+                <RatingDiv>
+                    <Rating name="read-only" value={review_point} readOnly />
                     <Information>{`${review_date.substring(0,11)}`}</Information>
-                <Overview>
-                    {review_content}
-                </Overview>
+                </RatingDiv>
             </Content>
+            <Overview>
+                {review_content}
+            </Overview>
             {logged && user_id === id && (
                 <>
-                    <Button onClick={showModal} type="primary" value={review_id}>수정</Button>
-                    <Button onClick={handleDlete} value={review_id}>삭제</Button>
+                    <Button onClick={showModal} type="primary" value={review_id}>修正</Button>
+                    <Button onClick={handleDlete} value={review_id}>削除</Button>
                 </>
             )}    
             </>

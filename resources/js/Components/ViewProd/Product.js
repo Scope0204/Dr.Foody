@@ -97,15 +97,15 @@ export default class extends Component {
     let result = null;
     
     let logged = false;
-    const {food_code, user_id} = this.state;
+    const {food_code, id, user_id} = this.state;
     console.log("user_id: ",user_id);
     console.log("food_code: ",food_code);
     try {
       // food_id에 대한 정보 가져오는 api
       // user_id = window.sessionStorage.getItem('id');
-      if(user_id) {
+      if(id) {
         logged = true;
-        ({data : result} = await axios.get(`http://3.34.97.97/api/detailFood/${food_code}/${user_id}`));
+        ({data : result} = await axios.get(`http://3.34.97.97/api/detailFood/${food_code}/${id}`));
       } else { 
         ({data : result} = await axios.get(`http://3.34.97.97/api/detailFood/${food_code}`));
       }

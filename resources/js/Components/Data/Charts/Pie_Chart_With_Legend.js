@@ -5,12 +5,24 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import styled from 'styled-components';
 import Rating from '@material-ui/lab/Rating';
 
+
 const ChartDiv = styled.div`
   left: 50%;
   transform: translate(30%);
 `;
 const PointDiv = styled.div`
   position absolute;
+`;
+
+const TextDiv = styled.div`
+padding-top: 5px;
+padding-bottom: 5px;
+margin-bottom: 50px;
+text-align: center;
+background: #dddddd;
+font-weight: 600;
+color: black;
+font-size: 20px;
 `;
 am4core.useTheme(am4themes_animated);
 
@@ -119,8 +131,8 @@ class Pie_Chart_With_Legend extends Component {
     const {loading} = this.state;
     return (
         <>
+          <TextDiv style={{ textAlign:"center", fontSize: "20px" }}>性別検索の情報です。</TextDiv>
           <ChartDiv>
-              <div style={{ fontSize: "20px", paddingTop: "30px" }}>성별 조회수 정보입니다.</div>
               <div id="Pie_Chart_With_Legend" style={{ width: "50%", height: "500px" }}></div>
           </ChartDiv>
         </>

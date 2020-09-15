@@ -5,6 +5,7 @@ import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { findFontSize } from '@amcharts/amcharts4/.internal/core/utils/DOM';
 
 const ExpansionPanel = withStyles({
   root: {
@@ -32,6 +33,8 @@ const ExpansionPanelSummary = withStyles({
     '&$expanded': {
       minHeight: 56,
     },
+    left: '50%',
+    transform: 'translate(-50%)',
   },
   content: {
     '&$expanded': {
@@ -60,7 +63,9 @@ export default function CustomizedExpansionPanels({ title, children}) {
     <div>
       <ExpansionPanel square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>'{title}'에 관한 검사 결과</Typography>
+          <Typography>' {title} 'の検索結果</Typography>
+          
+          {/* <div style={FontSize='bold'}>' {title} 'の検索結果</div> */}
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
         

@@ -101,13 +101,13 @@ class Login extends Component {
         console.log('실행');
         console.log(id);
         return (
-            <AuthContent title="로그인">
-                <InputWithLabel label="아이디" name="id" placeholder="아이디" onChange={this.updateInform}/>
-                <InputWithLabel label="비밀번호" name="password" placeholder="비밀번호" type="password" onChange={this.updateInform}/>
-                <AuthButton onClick={this.handleLoginButton}>로그인</AuthButton>
+            <AuthContent title="ログイン">
+                <InputWithLabel label="아이디" name="id" placeholder="ID" onChange={this.updateInform}/>
+                <InputWithLabel label="비밀번호" name="password" placeholder="PASSWORD" type="password" onChange={this.updateInform}/>
+                <AuthButton onClick={this.handleLoginButton}>ログイン</AuthButton>
                 <LinkDiv>
-                    <AuthLink to='/regist' children='회원가입'></AuthLink>
-                    <AuthLink to='/' children='돌아가기'></AuthLink>
+                    <AuthLink to='/regist' children='会員登録'></AuthLink>
+                    <AuthLink to='/' children='戻る'></AuthLink>
                 </LinkDiv>
                 {/* modify: /auth/register */}
             </AuthContent>

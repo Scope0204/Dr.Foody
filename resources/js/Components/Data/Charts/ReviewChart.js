@@ -1,6 +1,20 @@
 import React from 'react';
 import ExportExcel from './ExportExcel';
 import { Table } from 'antd';
+import styled from 'styled-components';
+
+const TitleDiv = styled.div`
+padding-top: 5px;
+padding-bottom: 5px;
+margin-bottom: 50px;
+text-align: center;
+background: #dddddd;
+font-weight: 600;
+color: black;
+font-size: 20px;
+
+`;
+
 
 class ReviewChart extends React.Component{
     constructor(props){
@@ -20,56 +34,56 @@ class ReviewChart extends React.Component{
             table_data: null,
             columns: [
                 {
-                    title: '연령',
+                    title: '年齢',
                     dataIndex: 'name',
                     width: 50,
                 },
                 {
-                    title: '성별',
+                    title: '性別',
                     dataIndex: 'i1',
                     width: 50,
                 },{
-                    title: '유저 국가',
+                    title: 'ユーザーの国家',
                     dataIndex: 'i2',
                     width: 150,
                 },{
-                    title: '조회 일시',
+                    title: '検索日付',
                     dataIndex: 'i3',
                     width: 150,
                 },{
-                    title: '기피재료',
+                    title: '注意すべき原材料',
                     dataIndex: 'i4',
                     width: 100,
                 },{
-                    title: '별점',
+                    title: '点数',
                     dataIndex: 'i5',
                     width: 50,
                 },{
-                    title: '내용',
+                    title: '内容',
                     dataIndex: 'i6',
                     width: 160,
                 },{
-                    title: '맛 리뷰 여부',
+                    title: '味レビューの状態',
                     dataIndex: 'i7',
                     width: 60,
                 },{
-                    title: '선호 맛 레벨(매운맛)',
+                    title: '味のレベル(辛味)',
                     dataIndex: 'i8',
                     width: 100,
                 },{
-                    title: '선호 맛 레벨(쓴맛)',
+                    title: '味のレベル(苦味)',
                     dataIndex: 'i9',
                     width: 100,
                 },{
-                    title: '선호 맛 레벨(단맛)',
+                    title: '味のレベル(甘味)',
                     dataIndex: 'i10',
                     width: 100,
                 },{
-                    title: '선호 맛 레벨(신맛)',
+                    title: '味のレベル(酸味)',
                     dataIndex: 'i11',
                     width: 100,
                 },{
-                    title: '선호 맛 레벨(짠맛)',
+                    title: '味のレベル(塩味)',
                     dataIndex: 'i12',
                     width: 100,
                 }
@@ -84,7 +98,7 @@ class ReviewChart extends React.Component{
         let gender = '';
         // if(source===1){
         //     let excel_data =  [{
-        //         columns: ["연령", "성별", "유저 국가", "조회 일시", "기피재료", "조회 장소", "선호 맛 레벨(매운맛)", "선호 맛 레벨(쓴맛)","선호 맛 레벨(단맛)","선호 맛 레벨(신맛)","선호 맛 레벨(짠맛)"],
+        //         columns: ["연령", "性別", "ユーザーの国家", "検索日付", "注意すべき原材料", "조회 장소", "味のレベル(辛味)", "味のレベル(苦味)","味のレベル(甘味)","味のレベル(酸味)","味のレベル(塩味)"],
         //         data: []
         //     }];
         //     for(let i=0; i < all_data_result.length; i++){
@@ -105,19 +119,19 @@ class ReviewChart extends React.Component{
         if(source===0){
             let table_data = [];
             let excel_data =  [{
-                columns: ["연령", "성별", "유저 국가", "조회 일시", "기피재료",
-                            "별점", "내용", "맛 리뷰 여부",
-                            "선호 맛 레벨(매운맛)", "선호 맛 레벨(쓴맛)","선호 맛 레벨(단맛)",
-                            "선호 맛 레벨(신맛)","선호 맛 레벨(짠맛)"],
+                columns: ["年齢", "性別", "ユーザーの国家", "検索日付", "注意すべき原材料",
+                            "点数", "内容", "味レビューの状態",
+                            "味のレベル(辛味)", "味のレベル(苦味)","味のレベル(甘味)",
+                            "味のレベル(酸味)","味のレベル(塩味)"],
                 data: []
             }];
             for(let i=0; i < all_data_result.length; i++){
                 let setting = [];
                 let type = true;
                 if(all_data_result[i].gender){
-                    gender = '남성';
+                    gender = '男性';
                 } else {
-                    gender = '여성';
+                    gender = '女性';
                 }
                 if(all_data_result[i].type){
                     type = true;
@@ -239,10 +253,11 @@ class ReviewChart extends React.Component{
         console.log("all_data_result: ");
         console.log(all_data_result);
         return (
-            <>
-                <ExportExcel dataSet = {excel_data} />
-                <div style={{ paddingTop: "50px"}}>{`총 ${result_count} 개의 결과가 검색되었습니다.`}</div>
-                <Table columns={columns} dataSource={table_data} pagination={{ pageSize: 50 }} scroll={{ y: 700 }} />
+            <>  <TitleDiv>
+                    <div>{` ${result_count}件の結果があります。`}</div>
+                </TitleDiv>
+                <ExportExcel dataSet={excel_data} />
+                <Table columns={columns} dataSource={table_data} pagination={{ pageSize: 50 }} scroll={{ y: 500 }} />
             </>
         );
     }

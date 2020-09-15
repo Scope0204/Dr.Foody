@@ -17,20 +17,19 @@ const Container = styled.div`
     position: relative;
     left: 50%;
     transform: translate(-50%);
-    border: 1px solid red;
 `;
 
 const Content = styled.div`
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 50%;
     position: relative;
     z-index: 1;
 `;
 
 const Cover = styled.div`
-width: 20%;
-height: 30%;
+    width: 280px;
+    height: 230px;
     background-image: url(${props => props.bgImage});
     background-position: center center;
     background-size: cover;
@@ -49,17 +48,23 @@ const Data = styled.div`
 const Title = styled.h1`
     font-size: 45px;
     margin-bottom: 30px;
+    font-weight: 600;
 `;
 
 const Divider = styled.span`
     margin: 0 7px;
+    font-size: 20px;
+    color: black;
+    font-weight: 500;
 `;
 
 const InformationContainer = styled.div`
 `;
 
 const Information = styled.span`
-    font-size: 15px;
+    font-size: 20px;
+    color: black;
+    font-weight: 500;
     margin-bottom: 20px;
 `;
 
@@ -71,14 +76,23 @@ const Overview = styled.div`
     line-height: 1.5;
     width: 80%;
 `;
-const Div = styled.div`
+const WarningDiv = styled.div`
+    padding-top: 20px;
     color: red;
+    font-size: 28px;
+    font-weight: 400;
 `;
 const TextAreaContainer = styled.div`
     width: 50%;
     transform: translate(50%, 20%);
 `;
 
+const BorderDiv = styled.div`
+width: 80%;
+border-top: 1px solid rgb(221, 221, 221) !important;
+margin-bottom: 3%;
+transform: translate(12%);
+`;
 // food_id: 1,
   // company_name: "(주)농심",
   // food_name: "신라면",
@@ -115,19 +129,16 @@ const ProductPresenter = ({
                             <Data>
                                 <Title>{result.food_name}</Title>
                                 <InformationContainer>
-                                    <Information>{result.food_name}</Information>
-                                    <Divider>•</Divider>
-                                    <Information>{result.point}</Information>
-                                    <Divider>•</Divider>
+                                    <Information>平均点数: {result.point}({review_result? review_result.length+1 : 0}個)</Information>
+                                    <Divider> / </Divider>
                                     <Information>
-                                        {result.company_name}
-                                        {result.country}
+                                        製造会社: {result.company_name}
                                     </Information>
                                 </InformationContainer>
                                 <Overview>
                                     {result.material}
-                                    <Div>{result.avoid}</Div>
-                                    <WordCloud food_code={result.food_id} />
+                                    <WarningDiv>{result.avoid? result.avoid: "注意すべき原材料がありません。"}</WarningDiv>
+                                    {/* <WordCloud food_code={result.food_id} /> */}
                                 </Overview>
                             </Data>
                         </Content>
@@ -146,6 +157,7 @@ const ProductPresenter = ({
                         </>
                 )
                 } */}
+                <BorderDiv />
                 {review_result && review_result.length > 0 && (
                     <ReviewList 
                         review_count={review_count} 

@@ -48,13 +48,15 @@ const Image = styled.div`
     `;
 
 const ControlButton1 = styled.button`
-    background-color: ${props => props.current ? "red" : "white"};
+    background-color: ${props => props.current ? "white" : "#ff5122"};
     &.outline {
+      
+      float: right;
         font-weight: 700;
         position: relative;
         z-index: 3;
         background: transparent;
-        background-color: ${props => props.current ? "#0464C9" : "white"};
+        background-color: ${props => props.current ? "#ff5122" : "white"};
         color: ${props => props.current ? "white" : "black"};
         font-size: 14px;
         border-color: #d3d3d3;
@@ -70,7 +72,7 @@ const ControlButton1 = styled.button`
     }
     &.outline:hover {
         color: white;
-        background: #0464C9;
+        background: #ff5122;
         border-color: white;
         transition: all 0.2s linear;
     }
@@ -102,12 +104,13 @@ const ControlButton1 = styled.button`
 }
 `;
 const ControlButton2 = styled.button`
-    background-color: ${props => props.current ? "tomato" : "white"};
+    background-color: ${props => props.current ? "white" : "#ff5122"};
     &.outline {
+      float: right;
       position: relative;
       z-index: 3;
       background: transparent;
-      color: #1172c4;
+      color: #ff5122;
       font-size: 14px;
       border-color: #1172c4;
       border-style: solid;
@@ -122,7 +125,7 @@ const ControlButton2 = styled.button`
   }
   &.outline:hover {
       color: white;
-      background: #1172c4;
+      background: #ff5122;
       border-color: white;
       transition: all 0.2s linear;
   }
@@ -134,13 +137,13 @@ const ControlButton2 = styled.button`
       color: #0587B3;
       border-color: #d3d3d3;
       background: transparent;
-      background-color: ${props => props.current ? "#0587B3" : "white"};
+      background-color: ${props => props.current ? "#ff5122" : "white"};
       color: ${props => props.current ? "white" : "black"};
   }
   &.green-white:hover {
       color: white;
-      background: #0587B3;
-      border-color: #0587B3;
+      background: #ff5122;
+      border-color: #ff5122;
   }
   &.purple-white {
       font-weight: 700;
@@ -167,6 +170,10 @@ const ControlButton2 = styled.button`
       border-color: #04C9C7;
   }
 }
+`;
+const TitleDiv = styled.div`
+  font-size: 20px;
+  font-weight: 600;
 `;
     const BuyContainer = styled.div`
     display: flex;
@@ -199,22 +206,22 @@ export default function ComplexGrid({food_id, food_name, food_photo, rating, rev
                       <Grid item xs={12} sm container>
                         <Grid item xs container direction="row" spacing={2}>
                           <Grid item xs>
-                            <Typography gutterBottom variant="subtitle1">
-                              {`제품명: ${food_name}`}
-                            </Typography>
+                            <TitleDiv>
+                              {`${food_name}` }
+                            </TitleDiv>
                             <Typography variant="body2" gutterBottom>
-                              {`총 리뷰 수:${review_count? review_count: '0'}`}
+                              {` 全体レビュー数:${review_count? review_count: '0'}`  }
                               <span> / </span>
-                              {`총 조회 수:${search_count? search_count: '0'}`}
+                              {` 全体検索数:${search_count? search_count: '0'}`  }
                               <span> / </span>
-                              {`선호국가 :${country? country: '데이터가 없습니다'}`}
+                              {` 人気国家:${country? country: 'データなし'}`  }
                               <span> / </span>
-                              {`선호성별:${sex? sex: '데이터가 없습니다'}`}
+                              {` 人気性別:${sex? sex: 'データなし'}` }
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
                             <Typography variant="body2" style={{ cursor: 'pointer' }} onClick={checkUser}>
-                              <ControlButton2 className="outline green-white">구매</ControlButton2>
-                              <ControlButton1 className="outline">찜</ControlButton1>
+                              <ControlButton2 className="outline green-white">購入</ControlButton2>
+                              <ControlButton1 className="outline">お気に入り</ControlButton1>
                             </Typography>
                             </Typography>
                           </Grid>
@@ -249,23 +256,23 @@ export default function ComplexGrid({food_id, food_name, food_photo, rating, rev
                       <Grid item xs={12} sm container>
                         <Grid item xs container direction="row" spacing={2}>
                           <Grid item xs>
-                            <Typography gutterBottom variant="subtitle1">
-                              {`제품명: ${food_name}`}
-                            </Typography>
+                          <TitleDiv>
+                              {`${food_name}` }
+                            </TitleDiv>
                             <Typography variant="body2" gutterBottom>
-                            {`총 리뷰 수:${review_count? review_count: '0'}`}
+                              {` 全体レビュー数:${review_count? review_count: '0'}`  }
                               <span> / </span>
-                              {`총 조회 수:${search_count? search_count: '0'}`}
+                              {` 全体検索数:${search_count? search_count: '0'}`  }
                               <span> / </span>
-                              {`선호국가 :${country? country: '데이터가 없습니다'}`}
+                              {` 人気国家:${country? country: 'データなし'}`  }
                               <span> / </span>
-                              {`선호성별:${sex? sex: '데이터가 없습니다'}`}
+                              {` 人気性別:${sex? sex: 'データなし'}` }
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
                               {bought
                                   ?(
                                       <Link to={`/data/${food_id}`} >
-                                              <ControlButton1 className="outline" variant="contained">데이터 확인</ControlButton1>
+                                              <ControlButton1 className="outline" variant="contained">データ確認</ControlButton1>
                                       </Link>
                                   )
                                   :(
@@ -273,8 +280,8 @@ export default function ComplexGrid({food_id, food_name, food_photo, rating, rev
                                 <Typography variant="body2" style={{ cursor: 'pointer' }}>
                                   {/* <Button variant="contained">구매</Button>
                                   <Button variant="contained">찜</Button> */}
-                                  <ControlButton2 className="outline green-white" onClick={onConfirm} value={food_id} name='buy'  variant="contained">구매</ControlButton2>
-                                  <ControlButton1 className="outline" onClick={onConfirm} value={food_id} name='wish' variant="contained">찜</ControlButton1>
+                                  <ControlButton2 className="outline green-white" onClick={onConfirm} value={food_id} name='buy'  variant="contained">購入</ControlButton2>
+                                  <ControlButton1 className="outline" onClick={onConfirm} value={food_id} name='wish' variant="contained">お気に入り</ControlButton1>
                                 </Typography>
                               </Grid>
                               )

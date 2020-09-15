@@ -36,7 +36,8 @@ class Collapsible_force extends React.Component{
     async componentDidMount(){
         console.log("키워드 컴디마 시작");
     // 유사단어 생성===========================================================================
-        const { food_name } = this.state;
+        // const { food_name } = this.state;
+        const food_name = "辛ラーメン";
         let chart = am4core.create("Collapsible_force", am4plugins_forceDirected.ForceDirectedTree);
         let productNameList = [food_name];
         // 키워드 가져오기
@@ -44,7 +45,7 @@ class Collapsible_force extends React.Component{
         let dict_keyword = [food_name];
         let dict_value = [];
         // 키워드와 횟수 분류
-        for (let i=0; i < dict_result.length; i++){
+        for (let i=0; i < dict_result.length-1; i++){
             dict_keyword.push(dict_result[i].keyword);
             dict_value.push(dict_result[i].number);
         }
@@ -53,8 +54,8 @@ class Collapsible_force extends React.Component{
 
         // 유사 단어 가져오기
         const {data:  {food_keyword: keyword_result}} = await Api.foodKeyWordApi(food_name, dict_keyword);
-        console.log(food_name, productNameList);
-        console.log(keyword_result);
+        console.log(food_name, dict_keyword);
+        // console.log("keyword_result: ", food_keyword);
         let keyword_data = [];
         let keyword_data_node = [];
         for (let i=0; i < keyword_result[0].surrounding.length-5; i++){
@@ -64,6 +65,8 @@ class Collapsible_force extends React.Component{
             }
             keyword_data_node.push(nodedata); 
         }
+        // let keyword_result = []
+        
         for (let i=1; i < keyword_result.length-5; i++){
             let test = null;
             let chilTest = [];
@@ -91,49 +94,49 @@ class Collapsible_force extends React.Component{
     // 테이블 생성 ============================================================================
     const columns = [
         {
-          title: '기준 단어',
+          title: '基準単語',
           dataIndex: 'name',
           width: 100,
         },
         {
-          title: '유사단어(유사도)',
+          title: '類似単語(類似度)',
           dataIndex: 'i1',
           width: 139,
         },{
-            title: '유사단어(유사도)',
+            title: '類似単語(類似度)',
             dataIndex: 'i2',
             width: 139,
           },{
-            title: '유사단어(유사도)',
+            title: '類似単語(類似度)',
             dataIndex: 'i3',
             width: 139,
           },{
-            title: '유사단어(유사도)',
+            title: '類似単語(類似度)',
             dataIndex: 'i4',
             width: 139,
           },{
-            title: '유사단어(유사도)',
+            title: '類似単語(類似度)',
             dataIndex: 'i5',
             width: 139,
           },{
-            title: '유사단어(유사도)',
+            title: '類似単語(類似度)',
             dataIndex: 'i6',
             width: 139,
           },{
-            title: '유사단어(유사도)',
+            title: '類似単語(類似度)',
             dataIndex: 'i7',
             width: 139,
           },{
-            title: '유사단어(유사도)',
+            title: '類似単語(類似度)',
             dataIndex: 'i8',
             width: 139,
           },{
-            title: '유사단어(유사도)',
+            title: '類似単語(類似度)',
             dataIndex: 'i9',
             width: 139,
           },
           {
-            title: '유사단어(유사도)',
+            title: '類似単語(類似度)',
             dataIndex: 'i10',
             width: 139,
           },
@@ -186,7 +189,7 @@ class Collapsible_force extends React.Component{
         // 차트 옵션 =====================================================================
         // 엑셀 데이터 ===================================================================
             let excel_data =  [{
-                columns: ["기준 단어", "유사단어", "유사도"],
+                columns: ["基準単語", "類似単語", "類似度"],
                 data: []
             }]
             for(let i=0; i < keyword_result.length; i++){

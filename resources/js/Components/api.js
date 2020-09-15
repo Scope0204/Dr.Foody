@@ -6,7 +6,7 @@ const api = axios.create({
     baseURL: 'http://3.34.97.97/api/'
 });
 const clustering_api = axios.create({
-    baseURL: 'http://35.230.114.182:5000/',
+    baseURL: 'http://34.82.46.49:5000/',
     withCredentials: false,
     headers: {
         'Access-Control-Allow-Origin' : '*',

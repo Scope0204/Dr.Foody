@@ -4,7 +4,7 @@ import Message from '../../Message';
 import ProductList from './ProductList';
 import Product from './Product';
 import { Link } from 'react-router-dom';
-
+import MediaCard from './MediaCard';
 const Container = styled.div`
     width: 100%;
     height: 100%;
@@ -18,6 +18,7 @@ const ImageContainer = styled.div`
     position: relative;
     width: 100%;
     height: 100%;
+    padding-bottom: 50px;
 `;
 const CartImage = styled.div`
 position:absolute;
@@ -39,8 +40,8 @@ left: 50%;
 const Text = styled.span`
     position:absolute;
     font-size: 45px;
-    margin-left: 50px;
-`;
+    `;
+    // margin-left: 50px;
 const Border = styled.div`
 width: 60%;
 height: 100%;
@@ -68,26 +69,27 @@ padding-bottom: 10px;
 //         "country": "대한민국",
 //         "sex": "남자"
  
-const DataListPresenter = ({bought_list}) => (
+const DataListPresenter = ({bought_list, foodJp}) => (
     <Container>
         <ImageContainer>
-            <CartImage bgUrl = {require('../../../assets/logo.jpg')} />
+            {/* <CartImage bgUrl = {require('../../../assets/logo.jpg')} /> */}
             <Link to='/wishlist'>
                 <WishImage bgUrl = {require('../../../assets/cart.png')}/>
             </Link>
-            <Text>구매 데이터 목록 </Text>
+            <Text>データリスト</Text>
         </ImageContainer>
-        <Border />
+        {/* <Border /> */}
         {/* bought_list.length > 0 && */}
         {bought_list && bought_list.length > 0
         ? (
             <ProductList>
                 {bought_list.map( (b,index) => (
-                    <Product 
+                    <MediaCard 
                         key= {index}
                         food_id = {b.food_id}
                         company_name = {b.company_name}
                         food_name = {b.food_name}
+                        foodJp = {foodJp}
                         food_photo = {b.food_photo}
                         point = {b.point}
                         review_count = {b.review_count}
@@ -95,11 +97,23 @@ const DataListPresenter = ({bought_list}) => (
                         country = {b.country}
                         sex = {b.sex}
                     />
-                ))}
+                    // <Product 
+                    //     key= {index}
+                    //     food_id = {b.food_id}
+                    //     company_name = {b.company_name}
+                    //     food_name = {b.food_name}
+                    //     food_photo = {b.food_photo}
+                    //     point = {b.point}
+                    //     review_count = {b.review_count}
+                    //     search_count = {b.search_count}
+                    //     country = {b.country}
+                    //     sex = {b.sex}
+                    // />
+                    ))}
             </ProductList>
         )
         : (
-            <Div>구매 목록이 없습니다.</Div> 
+            <Div>データがありません。</Div> 
         )            
         }
     </Container>

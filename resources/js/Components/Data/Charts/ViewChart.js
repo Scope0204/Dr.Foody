@@ -1,7 +1,20 @@
 import React from 'react';
 import ExportExcel from './ExportExcel';
 import { Table } from 'antd';
+import styled from 'styled-components';
 
+const TitleDiv = styled.div`
+padding-top: 5px;
+padding-bottom: 5px;
+margin-bottom: 50px;
+text-align: center;
+background: #dddddd;
+font-weight: 600;
+color: black;
+font-size: 20px;
+
+width: 95%;
+`;
 class ViewChart extends React.Component{
     constructor(props){
         super(props);
@@ -20,48 +33,48 @@ class ViewChart extends React.Component{
             table_data: null,
             columns: [
                 {
-                    title: '연령',
+                    title: '年齢',
                     dataIndex: 'name',
                     width: 50,
                 },
                 {
-                    title: '성별',
+                    title: '性別',
                     dataIndex: 'i1',
                     width: 50,
                 },{
-                    title: '유저 국가',
+                    title: 'ユーザーの国家',
                     dataIndex: 'i2',
                     width: 150,
                 },{
-                    title: '조회 일시',
+                    title: '検索日付',
                     dataIndex: 'i3',
                     width: 150,
                 },{
-                    title: '조회 장소',
+                    title: '検索場所',
                     dataIndex: 'i4',
                     width: 150,
                 },{
-                    title: '기피재료',
+                    title: '注意すべき原材料',
                     dataIndex: 'i5',
                     width: 100,
                 },{
-                    title: '선호 맛 레벨(매운맛)',
+                    title: '味のレベル(辛味)',
                     dataIndex: 'i6',
                     width: 100,
                 },{
-                    title: '선호 맛 레벨(쓴맛)',
+                    title: '味のレベル(苦味)',
                     dataIndex: 'i7',
                     width: 100,
                 },{
-                    title: '선호 맛 레벨(단맛)',
+                    title: '味のレベル(甘味)',
                     dataIndex: 'i8',
                     width: 100,
                 },{
-                    title: '선호 맛 레벨(신맛)',
+                    title: '味のレベル(酸味)',
                     dataIndex: 'i9',
                     width: 100,
                 },{
-                    title: '선호 맛 레벨(짠맛)',
+                    title: '味のレベル(塩味)',
                     dataIndex: 'i10',
                     width: 100,
                 }
@@ -77,15 +90,15 @@ class ViewChart extends React.Component{
         if(source===1){
             let table_data = [];
             let excel_data =  [{
-                columns: ["연령", "성별", "유저 국가", "조회 일시", "기피재료", "조회 장소", "선호 맛 레벨(매운맛)", "선호 맛 레벨(쓴맛)","선호 맛 레벨(단맛)","선호 맛 레벨(신맛)","선호 맛 레벨(짠맛)"],
+                columns: ["年齢", "性別", "ユーザーの国家", "検索日付", "注意すべき原材料", "検索場所", "味のレベル(辛味)", "味のレベル(苦味)","味のレベル(甘味)","味のレベル(酸味)","味のレベル(塩味)"],
                 data: []
             }];
             for(let i=0; i < all_data_result.length; i++){
                 let setting = [];
                 if(all_data_result[i].gender){
-                    gender = '남성';
+                    gender = '男性';
                 } else {
-                    gender = '여성';
+                    gender = '女性';
                 }
                     table_data.push({
                         key: i,
@@ -116,7 +129,7 @@ class ViewChart extends React.Component{
         }
         //  else if(source===0){
         //     let excel_data =  [{
-        //         columns: ["연령", "성별", "유저 국가", "조회 일시", "기피재료",
+        //         columns: ["年齢", "性別", "ユーザーの国家", "조회 일시", "기피재료",
         //                     "별점", "내용", "맛 리뷰 여부",
         //                     "선호 맛 레벨(매운맛)", "선호 맛 레벨(쓴맛)","선호 맛 레벨(단맛)",
         //                     "선호 맛 레벨(신맛)","선호 맛 레벨(짠맛)"],
@@ -145,7 +158,7 @@ class ViewChart extends React.Component{
         //     }
             
         // TABLE 정보 ============================================================================================
-        // "연령", "성별", "유저 국가", "조회 일시", "기피재료", "조회 장소", "선호 맛 레벨(매운맛)", "선호 맛 레벨(쓴맛)","선호 맛 레벨(단맛)","선호 맛 레벨(신맛)","선호 맛 레벨(짠맛)"
+        // "年齢", "성별", "유저 국가", "조회 일시", "기피재료", "조회 장소", "선호 맛 레벨(매운맛)", "선호 맛 레벨(쓴맛)","선호 맛 레벨(단맛)","선호 맛 레벨(신맛)","선호 맛 레벨(짠맛)"
             
             
             // TABLE 정보 ============================================================================================
@@ -168,9 +181,11 @@ class ViewChart extends React.Component{
         console.log(all_data_result);
         return (
             <>
+                <TitleDiv>
+                    <div>{`${result_count}件の結果があります。`}</div>
+                </TitleDiv>
                 <ExportExcel dataSet = {excel_data} />
-                <div>{`총 ${result_count} 개의 결과가 검색되었습니다.`}</div>
-                <Table columns={columns} dataSource={table_data} pagination={{ pageSize: 50 }} scroll={{ y: 700 }} />
+                <Table columns={columns} dataSource={table_data} pagination={{ pageSize: 50 }} scroll={{ y: 500 }} />
             </>
         );
     }

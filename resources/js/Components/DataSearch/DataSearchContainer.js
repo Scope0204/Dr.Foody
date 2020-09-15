@@ -8,14 +8,14 @@ import CustomizedExpansionPanels from './ExpensionPannel';
 
 const Container = styled.div`
     position: relative;
+    padding-top: 5%;
     `;
-    // padding-top: 7%;
 // Search section
 const SerachContainer = styled.div`
 width: 50%;
 position: relative;
 padding-top: 200px;
-left: 70%;
+left: 71%;
 transform: translate(-70%);
 `;
 const Form = styled.form`
@@ -31,12 +31,12 @@ padding: 0.5em;
     border: 1.8px solid #ff5122;
     padding: 5px;
     margin-top: 20px; 
-    text-align: center;
+    color:black;
 `;
 const BtnSearch = styled.button`
     
     background-color:  #ff5122;
-    border: 1px solid  #ff5122;
+    border: 3px solid  #ff5122;
     color: white;
     font-size: 22px;
     padding: 9px;
@@ -52,38 +52,50 @@ const ResultContainer = styled.div`
     height: 100%;
 `;
 const LogoImage = styled.div`
-left: 49%;
-transform: translate(-49%);
+left: 51%;
+transform: translate(-50%);
     position: absolute;
     display: block;
-    width: 200px;
-    height: 190px;
+    width: 232px;
+    height: 180px;
     background-size: contain;
     background-image: url(${ props => props.bgUrl });
     background-position: center center;
 `;
 const LogoImage2 = styled.div`
-left: 49%;
+left: 50%;
 top: 100%;
-transform: translate(-49%);
+transform: translate(-50%);
     position: absolute;
     display: block;
-    width: 700px;
-    height: 280px;
+    width: 600px;
+    height: 198px;
     background-size: contain;
     background-image: url(${ props => props.bgUrl });
     background-position: center center;
 `;
-
+const Backdrop = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(${props => props.bgImage});
+    background-position: center center;
+    background-size: cover;
+    z-index: 0;
+`;
 
 
 const DataSearchContainer = ({ logined, checkUser, onConfirm , handleSubmit, searchTerm, updateTerm, pastTerm, result, loading, error }) => (
+        <>
+        <Backdrop bgImage={require('../../assets/background.png')} />
         <Container>
             <LogoImage bgUrl = {require('../../assets/logo.jpg')} />
             <SerachContainer>
                 <Form onSubmit={handleSubmit}>
-                    <Input placeholder="Search Products" value= {searchTerm} onChange={updateTerm} ></Input>
-                    <BtnSearch type="submit" value="검색">검색</BtnSearch>
+                    <Input placeholder="食品名を入力してください。" value= {searchTerm} onChange={updateTerm} ></Input>
+                    <BtnSearch type="submit" value="검색">検索</BtnSearch>
                 </Form>
             </SerachContainer>
             <ResultContainer>
@@ -137,6 +149,7 @@ const DataSearchContainer = ({ logined, checkUser, onConfirm , handleSubmit, sea
             {/* { error && <Message color="#e74c3c" text={error} />} */}
             {/* { result.length === 0  && <Message text={`Nothing Found for ${pastTerm}`} color="#FFFF00" />} */}
         </Container>
+        </>
 );
 
 export default DataSearchContainer;

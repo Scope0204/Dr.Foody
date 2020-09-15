@@ -4,7 +4,6 @@ import {Link, withRouter} from "react-router-dom";
 
 const Container = styled.div`
     color: black;
-    position: fixed;
     top:0;
     left:0;
     width:100%;
@@ -13,9 +12,11 @@ const Container = styled.div`
     align-items: center;
     padding: 0px 10px;
     z-index: 10;
-    box-shadow: 0px 1px 5px 2px rgba(0,0,0,0.8);
-    background-color: #ff5122;
+    position: relative;
     `;
+    // position: fixed;
+    // box-shadow: 0px 1px 5px 2px rgba(0,0,0,0.8);
+    // background-color: #ff5122;
 // rbga(20, 20, 20, 0.8); -> background-color
 const LogoImage = styled.div`
     height: 100%;
@@ -30,7 +31,7 @@ const LogoImage = styled.div`
 //     display: inline;
 // }
 const List = styled.ul`
-    display: felx;
+    display: flex;
     list-style: none; 
 `;
 // left: 90%;
@@ -41,7 +42,7 @@ const Item = styled.li`
     position: relative;
     font-size: 25px;
     font-weight: bold;
-    color:white;
+    color:black;
     align-items: center;
     justify-content: center;
     text-decoration: none;
@@ -50,7 +51,7 @@ const LogItem = styled.li`
     position: relative;
     font-size: 25px;
     list-style: none; 
-    left: 70%;
+    left: 65%;
     font-weight: bold;
     `;
         // &: hover {
@@ -64,15 +65,6 @@ const SLink = styled(Link)`
     text-decoration: none;
 `;
 
-const DropUl = styled.ul`
-display: none;
-`;
-const DropList = styled.li`
-
-&: hover {
-    background-color: red;
-}
-`;
 // position: absolute;
 class Header extends React.Component {
     

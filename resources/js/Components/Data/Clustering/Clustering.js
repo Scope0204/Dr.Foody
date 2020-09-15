@@ -8,9 +8,7 @@ import Radar from './Radar';
 
 const Container = styled.div`
     display: grid;
-    width:80%;
-    left: 50%;
-    transform: translate(15%);
+    width:90%;
 `;
 const MoveContainer = styled.div`
 `;
@@ -26,10 +24,21 @@ const Title = styled.div`
 const ChartContainer = styled.div`
     grid-column-start: 0;
     grid-column-end: 1;
-    padding-top: 70px;
     float: left;
 `;
 
+const TitleDiv = styled.div`
+padding-top: 5px;
+padding-bottom: 5px;
+margin-bottom: 20px;
+text-align: center;
+background: #dddddd;
+font-weight: 600;
+color: black;
+font-size: 20px;
+
+width: 95%;
+`;
 class Clustering extends React.Component{
     constructor(props){
         super(props);
@@ -53,13 +62,13 @@ class Clustering extends React.Component{
                     <MoveA href="#clustering_title">맛 레벨 분석</MoveA>
                 </MoveContainer> */}
                 <ChartContainer id="text_similarity">
-                    <Title className="clustering_title">Text 유사도 분석 결과</Title>
+                    <TitleDiv className="clustering_TitleDiv">Text類似度の分析結果</TitleDiv>
                     <Collapsible_force 
                         food_name={food_name}
                     />
                 </ChartContainer>
                 <ChartContainer id="clustering_title">
-                    <Title className="clustering_title">맛 레벨 분석</Title>
+                    <TitleDiv className="clustering_TitleDiv">味のレベル分析</TitleDiv>
                     <Radar food_name={food_name}/>
                 </ChartContainer>
             </Container>

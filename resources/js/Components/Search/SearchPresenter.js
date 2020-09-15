@@ -8,20 +8,20 @@ import Store from '../Store/store';
 
 const Container = styled.div`
     position: relative;
-    
+    padding-top: 5%;
     `;
     // padding-top: 7%;
 // Search section
 const SerachContainer = styled.div`
-    width: 50%;
-    position: absolute;
-    padding-top: 200px;
-    left: 70%;
-    transform: translate(-70%);
+width: 50%;
+position: relative;
+padding-top: 200px;
+left: 71%;
+transform: translate(-70%);
 `;
 const Form = styled.form`
     width: 100%;
-    position: absolute;
+    position: relative;
 `;
 const Input = styled.input`
 padding: 0.5em;
@@ -32,12 +32,12 @@ padding: 0.5em;
     border: 1.8px solid #ff5122;
     padding: 5px;
     margin-top: 20px; 
-    text-align: center;
+    color:black;
 `;
 const BtnSearch = styled.button`
     
     background-color:  #ff5122;
-    border: 1px solid  #ff5122;
+    border: 3px solid  #ff5122;
     color: white;
     font-size: 22px;
     padding: 9px;
@@ -52,12 +52,12 @@ const resultContainer = styled.div`
 
 `;
 const LogoImage = styled.div`
-left: 49%;
-transform: translate(-49%);
+left: 51%;
+transform: translate(-50%);
     position: absolute;
     display: block;
-    width: 200px;
-    height: 190px;
+    width: 232px;
+    height: 180px;
     background-size: contain;
     background-image: url(${ props => props.bgUrl });
     background-position: center center;
@@ -68,8 +68,8 @@ const SerachPresenter = ({ handleSubmit, searchTerm, updateTerm, pastTerm, resul
                     <LogoImage bgUrl = {require('../../assets/logo.jpg')} />
                     <SerachContainer>
                         <Form onSubmit={handleSubmit}>
-                            <Input placeholder="제품을 입력하여 주세요" value= {searchTerm} onChange={updateTerm} ></Input>
-                            <BtnSearch type="submit" value="검색">검색</BtnSearch>
+                            <Input placeholder="食品名を入力してください。" value= {searchTerm} onChange={updateTerm} ></Input>
+                            <BtnSearch type="submit" value="검색">検索</BtnSearch>
                         </Form>
                     </SerachContainer>
                     { loading ? (

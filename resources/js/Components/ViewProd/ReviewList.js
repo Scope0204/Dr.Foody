@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import ReviewsList from './ReviewsList'
 import {Api} from '../api';
 import Rating from '@material-ui/lab/Rating';
 import { Input, Button ,Modal } from 'antd';
@@ -12,11 +12,13 @@ const Container = styled.div`
     height: 100%;
     position: absolute;
     left: 50%;
-    transform: translate(-50%);
+    transform: translate(-72%);
 `;
 const LoggedButton = styled.button``;
 const ReviewCreateContainer = styled.div`
-    width: 100%;
+    width: 70%;
+    transform: translate(-13%);
+    margin-bottom: 5%;
 `;
 const RatingDiv = styled.div`
 width: 300px;
@@ -31,7 +33,17 @@ const Title = styled.span`
 const Grid = styled.div`
     width: 100%;
     height: 100%;
+    display: grid
+    grid-template-columns: auto auto;
     grid-gap: 20px;
+    `;
+    // grid-template-rows: 100px 100px;
+    // grid-template-columns: 150px 150px;
+    // grid-auto-rows: 100px;
+    // grid-rows: 3/4;
+const GridContainer = styled.div`
+width: 100%;
+    height: 100%;
 `;
 const labels = {
     0.5: '최악이에요',
@@ -235,10 +247,10 @@ class ReviewList extends React.Component{
                                         name="text_area"
                                         value={text_value}
                                         onChange={this.onChange}
-                                        placeholder="리뷰를 입력해 주세요"
+                                        placeholder="内容を入力してください。"
                                         autoSize={{ minRows: 3, maxRows: 5 }}
                                         />
-                                    <Button onClick={this.handleCreate}>등록</Button>
+                                    <Button onClick={this.handleCreate}>登録</Button>
                                 </ReviewCreateContainer>
                             )
                             :(
@@ -259,35 +271,37 @@ class ReviewList extends React.Component{
                                         name="text_area"
                                         value={text_value}
                                         onChange={this.onChange}
-                                        placeholder="리뷰를 입력해 주세요"
+                                        placeholder="内容を入力してください。"
                                         autoSize={{ minRows: 3, maxRows: 5 }}
                                         />
-                                    <Button>등록</Button>
+                                    <Button>登録</Button>
                                 </ReviewCreateContainer>
                             )
                         }
-                    <Grid>
-                        {review_result.map( (r, index) => (
-                            <Reviews 
-                                key={index}
-                                id={r.id} // 123
-                                user_id={id} // 123
-                                review_id={r.review_id} 
-                                review_date={r.review_date}
-                                review_content={r.review_content}
-                                review_point={r.review_point} 
-                                user_nickname={r.user_nickname} 
-                                // onClick 수정 삭제 필요
-                                country_code={r.country_code}
-                                logged={logged}
-                                handleDlete={this.handleDlete}
-                                onChange={this.onChange}
-                                // modal option
-                                showModal = {this.showModal}
-                                handleOk = {this.handleOk}
-                            />
-                        ))}
-                    </Grid>
+
+                            <ReviewsList>
+                                {review_result.map( (r, index) => (
+                                    <Reviews 
+                                        key={index}
+                                        id={r.id} // 123
+                                        user_id={id} // 123
+                                        review_id={r.review_id} 
+                                        review_date={r.review_date}
+                                        review_content={r.review_content}
+                                        review_point={r.review_point} 
+                                        user_nickname={r.user_nickname} 
+                                        // onClick 수정 삭제 필요
+                                        country_code={r.country_code}
+                                        logged={logged}
+                                        handleDlete={this.handleDlete}
+                                        onChange={this.onChange}
+                                        // modal option
+                                        showModal = {this.showModal}
+                                        handleOk = {this.handleOk}
+                                    />
+                                ))}
+                            </ReviewsList>
+                        
                     <Modal
                         visible={visible}
                         onOk={this.handleOk}

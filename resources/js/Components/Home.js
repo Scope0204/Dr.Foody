@@ -7,7 +7,6 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
-    padding-top: -7%;
 `;
 const LogoImage = styled.div`
     height: 100%;
@@ -43,8 +42,6 @@ const SLink = styled(Link)`
     text-decoration: none;
 `;
 const ImageContainer = styled.div`
-top: 10%;
-transform: translate(-10% 50%);
 width:100%;
 height: 100vh;
 display:block;  
@@ -52,6 +49,7 @@ display:block;
 const IfDiv = styled.div`
     width:100%;
     height: 100%;
+    max-height: 937px;
     background-image: url(${props => props.bgImage});
     background-position: center center;
     
@@ -77,7 +75,7 @@ class Home extends React.Component {
                 {/* <Header logged={logged} onLogout={onLogout} /> */}
                 <ImageContainer>
                     <IfDiv bgImage = {require(`../assets/home1.png`)}></IfDiv>
-                    <IfDiv bgImage = {require(`../assets/home2.png`)}></IfDiv>
+                    {/* <IfDiv bgImage = {require(`../assets/home2.png`)}></IfDiv> */}
                     {/* <IfDiv bgImage = {require(`../assets/sample3.jpg`)}></IfDiv> */}
                 </ImageContainer>
             </>

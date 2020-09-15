@@ -21,6 +21,7 @@ export default class extends React.Component{
             food_list: [],
             date: new Date().getTime(),
             order_id:"",
+            foodJp: "",
         };
         this.refreshList = this.refreshList.bind(this);
         this.createMerchant_uid = this.createMerchant_uid.bind(this);
@@ -45,7 +46,7 @@ export default class extends React.Component{
         await Api.wishDeleteApi(user_id, value);
         this.refreshList();
         console.log(this.state.wishList);
-        alert('삭제하였습니다.');
+        alert('削除しました。');
     };
 
     // 주문 번호 생성
@@ -68,10 +69,17 @@ export default class extends React.Component{
         });
         console.log(user_id);
         console.log(wishList);
+        let foodJp = "";
+        if(wishList.food_name==='신라면'){
+            foodJp = '辛ラーメン';
+        } else if(wishList.food_name==='불닭볶음면'){
+            foodJp = "ブルダック 炒め麺";
+        }
         this.setState({
             wishList,
             total_price,
             food_list,
+            foodJp,
         });
     }
     // 구매하기 버튼을 눌렀을 때 동작
@@ -145,7 +153,7 @@ export default class extends React.Component{
     // }
     
     render(){
-        const { wishList, total_price, error, user_id,type,order_id  } = this.state;
+        const { wishList, total_price, error, user_id,type,order_id,foodJp  } = this.state;
         console.log('위시리스트: ', wishList);
         const { food_list} = this.state;
         // console.log(order_id);
@@ -158,6 +166,7 @@ export default class extends React.Component{
                 wishList = {wishList}
                 total_price = {total_price}
                 user_id = {user_id}
+                foodJp = {foodJp}
                 type = {type}
                 handleCancel = {this.handleCancel}
                 handlePayment = {this.handlePayment}

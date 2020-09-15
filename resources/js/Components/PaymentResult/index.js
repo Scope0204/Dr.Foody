@@ -88,20 +88,20 @@ class PaymentResult extends React.Component {
       <Wrapper>
         <Container colorType="blue">
           <Icon type='smile' theme="filled" />
-          <p>{`결제를 완료하였습니다`}</p>
+          <p>{`決済を完了しました。`}</p>
           <ul>
             <li style={{fontSize: "20px"}}>
-              <span>주문번호</span>
+              <span>注文番号</span>
               <span>{order_id}</span>
             </li>
           </ul>
           <ButtonDiv>
             <Button size="large" onClick={() => this.props.history.push('/')}>
               <Icon type="arrow-left" />
-              메인화면으로 돌아가기
+              メインページへ戻る
             </Button>
             <Button size="large" onClick={() => this.props.history.push(`/mypage/datalist/${id}`)}>
-              구매내역 확인하기
+              購入リスト確認
               <Icon type="arrow-right" />
             </Button>
           </ButtonDiv>

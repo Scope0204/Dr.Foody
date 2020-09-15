@@ -5,9 +5,18 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import styled from 'styled-components';
 
 const ChartDiv = styled.div`
-transform: translate(15%);
-left: 25%;
-padding-top: 50px;
+`;
+const TitleDiv = styled.div`
+padding-top: 5px;
+padding-bottom: 5px;
+margin-bottom: 50px;
+text-align: center;
+background: #dddddd;
+font-weight: 600;
+color: black;
+font-size: 20px;
+
+width: 95%;
 `;
 
 am4core.useTheme(am4themes_animated);
@@ -45,13 +54,34 @@ class XYChart extends Component {
       let chart = am4core.create("chartdiv", am4charts.XYChart);
       let data = [];
       for(let i=0; i < third_data_result.data.length; i++){
-      let data_data = {
-        age: third_data_result.data[i].country,
-        reviews: third_data_result.data[i].review_count,
-        rating: third_data_result.data[i].visits,
+        let age = '';
+        switch(third_data_result.data[i].country){
+          case '10대':
+            age = '10代';
+            break;
+          case '20대':
+            age = '20代';
+            break;
+          case '30대':
+            age = '30代';
+            break;
+          case '40대':
+            age = '40代';
+            break;
+          case '50대':
+            age = '50代';
+            break;
+          case '60대':
+            age = '60代';
+            break;
+        }
+        let data_data = {
+          age: age,
+          reviews: third_data_result.data[i].review_count,
+          rating: third_data_result.data[i].visits,
+        }
+        data.push(data_data);
       }
-      data.push(data_data);
-    }
     // Add data
      chart.data = data;
   
@@ -93,8 +123,8 @@ class XYChart extends Component {
     categoryLabel.label.hideOversized = false;
     categoryLabel.label.truncate = false;
   }
-  createSeries("reviews", "리뷰 수");
-  createSeries("rating", "평균 평점");
+  createSeries("reviews", "レビューの数");
+  createSeries("rating", "平均評点");
   chart.exporting.menu = new am4core.ExportMenu();
       chart.exporting.menu.align = "left";
       chart.exporting.menu.verticalAlign = "top";
@@ -117,9 +147,11 @@ class XYChart extends Component {
   render() {
     return (
       <>
+      <TitleDiv>
+        <label>年齢別レビューの情報です。</label>
+      </TitleDiv>
       <ChartDiv>
-        <label>연령별 리뷰 정보입니다.</label>
-        <div id="chartdiv" style={{ width: "70%", height: "500px" }}></div>
+        <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
       </ChartDiv>
       </>
     );

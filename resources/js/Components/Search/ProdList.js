@@ -8,15 +8,16 @@ width: 100%;
     :not(:last-child){
         margin-bottom: 50px;
     }
-    padding-top: 300px;
+    padding-top: 70px;
 height: 100vh;
 
 `;
 const Title = styled.span`
-
+    text-align: center;
     margin: 60px;
     font-size: 22px;
     font-weight: 600;
+    transform: translate(50%);
 `;
 const Grid = styled.div`
     display: grid;
@@ -30,7 +31,7 @@ const Grid = styled.div`
 
 const ProdList = ({ title, children}) => (
     <Container>
-        <Title>'{title}'에 관한 검사 결과</Title>
+        <Title>'{title}'の検索結果</Title>
         <Grid>{children}</Grid>
     </Container>
 ); 
